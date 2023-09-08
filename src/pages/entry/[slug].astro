@@ -1,0 +1,126 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { getCollection, getEntry } from 'astro:content'
+import dayjs from 'dayjs'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('entries', ({ data }) => data)
+  return entries.map((entry: { slug: string }) => ({
+    params: { slug: entry.slug }
+  }))
+}
+
+const { slug } = Astro.params
+const data = await getEntry('entries', slug)
+const { headings, Content } = await data.render()
+const { date, day, title } = data.data
+
+export const prerender = true
+---
+
+<style is:global lang="scss">
+  .container {
+    display: flex;
+    width: 75vw;
+    margin: 0 auto;
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .toc {
+    align-self: flex-start;
+    font-family: var(--font-serif);
+    font-size: 0.8rem;
+    min-width: calc(15vw - 4rem);
+    padding-top: 2rem;
+    position: sticky;
+    top: 0;
+
+    * {
+      font-weight: normal;
+      margin-top: 0;
+      margin-bottom: 0.3rem;
+    }
+  }
+
+  .entry {
+    max-width: calc(60vw - 4rem);
+  }
+</style>
+
+<Layout title="Entry" description="Entry">
+  <div class="container">
+    <div class="toc">
+      {
+        headings.map((heading, idx) => {
+          let prevDepth = idx > 0 ? headings[idx - 1].depth : Infinity
+          switch (heading.depth) {
+            case 1:
+              return (
+                <h1>
+                  <a href={`#${heading.slug}`}>{heading.text}</a>
+                </h1>
+              )
+            case 2:
+              return (
+                <h2>
+                  <a
+                    href={`#${heading.slug}`}
+                    style={{ marginLeft: prevDepth < 2 ? '4px' : '' }}>
+                    {heading.text}
+                  </a>
+                </h2>
+              )
+            case 3:
+              return (
+                <h3>
+                  <a
+                    href={`#${heading.slug}`}
+                    style={{ marginLeft: prevDepth < 3 ? '5px' : '' }}>
+                    {heading.text}
+                  </a>
+                </h3>
+              )
+            case 4:
+              return (
+                <h4>
+                  <a
+                    href={`#${heading.slug}`}
+                    style={{ marginLeft: prevDepth < 3 ? '6px' : '' }}>
+                    {heading.text}
+                  </a>
+                </h4>
+              )
+            case 5:
+              return (
+                <h5>
+                  <a
+                    href={`#${heading.slug}`}
+                    style={{ marginLeft: prevDepth < 3 ? '7px' : '' }}>
+                    {heading.text}
+                  </a>
+                </h5>
+              )
+            case 6:
+              return (
+                <h6>
+                  <a
+                    href={`#${heading.slug}`}
+                    style={{ marginLeft: prevDepth < 3 ? '8px' : '' }}>
+                    {heading.text}
+                  </a>
+                </h6>
+              )
+          }
+        })
+      }
+    </div>
+    <div class="entry prose">
+      <p style={{ color: 'var(--theme)', marginBottom: '8px' }}>
+        {dayjs(date).format('MMM DD, YYYY')}
+      </p>
+      <h1 style={{ lineHeight: 1.2, marginTop: 0 }}>Day {day}: {title}</h1>
+      <Content />
+    </div>
+  </div>
+</Layout>

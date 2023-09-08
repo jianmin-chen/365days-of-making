@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+import dayjs from 'dayjs'
+
+const entries = await getCollection('entries')
+
+console.log(entries)
+
+export const prerender = true
+---
+
+<Layout title="Entries" description="Timeline of entries!" />

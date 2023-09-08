@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital@0;1&family=IBM+Plex+Mono&family=Luckiest+Guy&family=Oswald:wght@600&display=swap');
+
+:root {
+  --font-cursive: 'Luckiest Guy', cursive;
+  --font-serif: 'Alegreya', serif;
+  --font-sans: 'Oswald', 'BL Melody', sans-serif;
+  --font-mono: 'Menlo', 'IBM Plex Mono', monospace;
+  --theme: #b91920;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  background-color: #f3f0ed;
+  margin: 0;
+  overflow-x: clip;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+a {
+  color: var(--theme);
+  transition: 0.2s all;
+  text-decoration: none;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.prose {
+  color: #303030;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.6;
+
+  blockquote {
+    border-left: 2px solid var(--theme);
+    padding-left: 1rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--theme);
+    font-family: var(--font-sans);
+    letter-spacing: -1px;
+    transform: scale(1, 1.2);
+  }
+
+  code {
+    font-size: 1.3rem;
+  }
+
+  code,
+  pre {
+    font-family: var(--font-mono);
+  }
+
+  pre {
+    font-size: 1.1rem;
+    padding: 2rem;
+
+    code {
+      font-size: 1.1rem;
+    }
+  }
+
+  .contains-task-list {
+    list-style: none;
+    padding-left: 0;
+  }
+}
