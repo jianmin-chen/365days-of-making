@@ -1,13 +1,58 @@
 ---
-import Layout from '../../layouts/Layout.astro'
+import Layout from '../layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 import dayjs from 'dayjs'
 
-const entries = await getCollection('entries')
+const data = await getCollection('entries')
+let entries = {}
+data.map(entry => {
+  entries[entry.data.day] = entry
+})
 
-console.log(entries)
+Date.prototype.addDays = function (days) {
+  let date = new Date(this.valueOf())
+  date.setDate(date.getDate() + days)
+  return date
+}
+
+const getDates = (startDate: Date, stop: number) => {
+  let dates = []
+  let curr = startDate
+  for (let i = 0; i < stop; i++) {
+    dates.push(dayjs(curr).format('MMM DD, YYYY'))
+    curr = curr.addDays(1)
+  }
+  return dates
+}
+
+const dates = getDates(new Date(import.meta.env.PUBLIC_START_DATE), 365)
 
 export const prerender = true
 ---
 
-<Layout title="Entries" description="Timeline of entries!" />
+<style is:global lang="scss">
+  #map {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2rem;
+    gap: 2rem;
+
+    .entry {
+      border: 1px dashed var(--theme);
+      flex: calc(25% - 2rem);
+      padding: 1rem 2rem;
+    }
+  }
+</style>
+
+<Layout title="Entries" description="Timeline of entries!">
+  <div id="map">
+    {
+      dates.map(date => (
+        <div class="entry prose">
+          <p style={{ color: 'var(--red)' }}>{date}</p>
+        </div>
+      ))
+    }
+  </div>
+</Layout>

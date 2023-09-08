@@ -12,9 +12,12 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^1.0.2",
-    "@splidejs/react-splide": "^0.7.12",
+    "@astrojs/react": "^3.0.2",
+    "@astrojs/vercel": "^4.0.5",
+    "@supabase/supabase-js": "^2.33.1",
     "astro": "^3.0.10",
-    "dayjs": "^1.11.9"
+    "dayjs": "^1.11.9",
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "prettier": "^3.0.3",

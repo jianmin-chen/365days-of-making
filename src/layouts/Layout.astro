@@ -1,15 +1,17 @@
 ---
 import '../ui/globals.scss'
-import Header from '../components/Header.astro'
+import Header from '../components/Header.tsx'
 
 export interface Props {
   title: string | undefined
   description: string | undefined
+  popup: boolean | undefined
 }
 
-let { title, description } = Astro.props
+let { title, description, popup } = Astro.props
 title = `365 Days of Making | ${title}` || '365 Days of Making'
 description = description || ''
+popup = popup || false
 ---
 
 <!doctype html>
@@ -22,7 +24,7 @@ description = description || ''
     <title>{title}</title>
   </head>
   <body>
-    <Header />
+    <Header popup={popup} />
     <main>
       <slot />
     </main>

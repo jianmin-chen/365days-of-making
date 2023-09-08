@@ -31,6 +31,115 @@ a {
   }
 }
 
+header {
+  background-color: white;
+  border-bottom: 1px dashed var(--theme);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, #ddd 1px, transparent 1px),
+    linear-gradient(to bottom, #ddd 1px, transparent 1px);
+  color: var(--theme);
+  font-family: var(--font-serif);
+  padding-inline: 2rem;
+  padding-bottom: 0;
+  gap: 2rem;
+  transform: rotate(0.2deg);
+  display: flex;
+  justify-content: space-between;
+
+  > div:nth-child(2) {
+    align-self: flex-end;
+    max-width: 25vw;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 16px;
+
+    p {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    > h2 {
+      font-weight: normal;
+      margin-bottom: 0;
+    }
+  }
+
+  h1 {
+    font-family: var(--font-cursive);
+    font-size: 5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  path {
+    fill: transparent;
+  }
+}
+
+nav {
+  text-transform: uppercase;
+  display: flex;
+  gap: 4px;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  .modal-content {
+    max-width: 75vw;
+  }
+}
+
+.modal-open {
+  display: block;
+}
+
+#modal-button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  position: fixed;
+  bottom: 0;
+  right: -100px;
+  transform: rotate(-5deg);
+  transition: transform 0.2s;
+  z-index: 999;
+
+  img {
+    width: 256px;
+  }
+
+  span {
+    font-family: var(--font-mono);
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: calc(100% - 100px);
+  }
+
+  &:hover {
+    transform: rotate(-2deg);
+
+    span {
+      color: var(--theme);
+    }
+  }
+}
+
 .prose {
   color: #303030;
   font-family: var(--font-serif);

@@ -48,7 +48,7 @@ export const prerender = true
   }
 </style>
 
-<Layout title="Entry" description="Entry">
+<Layout title="Entry" description="Entry" popup={true}>
   <div class="container">
     <div class="toc">
       {
@@ -115,12 +115,31 @@ export const prerender = true
         })
       }
     </div>
-    <div class="entry prose">
-      <p style={{ color: 'var(--theme)', marginBottom: '8px' }}>
-        {dayjs(date).format('MMM DD, YYYY')}
-      </p>
-      <h1 style={{ lineHeight: 1.2, marginTop: 0 }}>Day {day}: {title}</h1>
-      <Content />
+    <div class="entry">
+      <div class="prose">
+        <p style={{ color: 'var(--theme)', marginBottom: '8px' }}>
+          {dayjs(date).format('MMM DD, YYYY')}
+        </p>
+        <h1 style={{ lineHeight: 1.2, marginTop: 0 }}>Day {day}: {title}</h1>
+        <Content />
+        <p>Have a question? Fire below.</p>
+      </div>
+      <script
+        src="https://giscus.app/client.js"
+        data-repo="jianmin-chen/365days-of-making"
+        data-repo-id="R_kgDOKRAyPw"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOKRAyP84CZLWE"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="0"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async></script>
     </div>
   </div>
 </Layout>
