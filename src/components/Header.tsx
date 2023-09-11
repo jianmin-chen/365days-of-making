@@ -5,6 +5,16 @@ export default function Header({ popup }) {
 
   return (
     <>
+      {popup !== false && (
+        <button
+          id="modal-button"
+          onClick={() => {
+            alert('hi')
+          }}>
+          <span>psst: you can subscribe to updates!</span>
+          <img src="/dino.png" />
+        </button>
+      )}
       <header>
         <div>
           <a href="https://hackclub.com/">
@@ -14,7 +24,9 @@ export default function Header({ popup }) {
               alt="Hack Club"
             />
           </a>
-          <h1>365 Days of Making</h1>
+          <h1>
+            <a href="/">365 Days of Making</a>
+          </h1>
         </div>
         <div>
           <h2>
@@ -43,16 +55,6 @@ export default function Header({ popup }) {
           </p>
         </div>
       </div>
-      {popup && (
-        <button
-          id="modal-button"
-          onClick={() => {
-            alert('hi')
-          }}>
-          <span>psst: you can subscribe to updates!</span>
-          <img src="/dino.png" />
-        </button>
-      )}
     </>
   )
 }
