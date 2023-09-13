@@ -26,6 +26,7 @@
 }
 
 :root {
+  --background: #f3f0ed;
   --font-cursive: 'Luckiest Guy', cursive;
   --font-serif: 'Alegreya', serif;
   --font-sans: 'Oswald', 'BL Melody', sans-serif;
@@ -39,7 +40,7 @@
 
 body,
 html {
-  background-color: #f3f0ed;
+  background-color: var(--background);
   margin: 0;
   overflow-x: clip;
   padding: 0;
@@ -153,7 +154,7 @@ footer {
 .modal {
   display: none;
   position: fixed;
-  z-index: 1;
+  z-index: 999;
   left: 0;
   top: 0;
   width: 100%;
@@ -237,13 +238,13 @@ footer {
   z-index: 1000;
 
   img {
-    width: 256px;
+    width: 200px;
   }
 
   span {
     font-family: var(--font-mono);
     position: absolute;
-    top: 0;
+    top: -14px;
     left: 0;
     max-width: calc(100% - 100px);
   }

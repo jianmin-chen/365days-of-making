@@ -1,6 +1,6 @@
 export default function TOC({ headings }) {
   return (
-    <div className="toc">
+    <div class="toc">
       {headings.map((heading, idx) => {
         let prevDepth = idx > 0 ? headings[idx - 1].depth : Infinity
         switch (heading.depth) {

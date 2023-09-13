@@ -53,7 +53,7 @@ export const prerender = true
       gap: 1rem;
     }
 
-    @media screen and (min-width: $md) {
+    @media screen and (min-width: $lg) {
       .entry:nth-child(4n + 5) {
         &::before {
           border-top: 3px dotted var(--theme);
@@ -89,14 +89,14 @@ export const prerender = true
         position: absolute;
         content: '';
 
-        @media screen and (min-width: $md) {
+        @media screen and (min-width: $lg) {
           left: 100%;
           top: 50%;
           border-top: 3px dotted var(--theme);
           width: 2rem;
         }
 
-        @media screen and (max-width: $md) {
+        @media screen and (max-width: $lg) {
           top: 100%;
           left: 50%;
           border-left: 3px dotted var(--theme);
@@ -123,7 +123,7 @@ export const prerender = true
       }
 
       .excerpt {
-        background-color: #f3f0ed;
+        background-color: var(--background);
         padding: 1rem;
         font-size: 1.3rem;
         position: relative;
@@ -173,10 +173,10 @@ export const prerender = true
             ) : (
               <div class="excerpt">
                 <svg
-                  fillRule="evenodd"
+                  fill-rule="evenodd"
                   clip-rule="evenodd"
-                  strokeLinejoin="round"
-                  strokeMiterlimit="1.414"
+                  stroke-linejoin="round"
+                  stroke-miterlimit="1.414"
                   xmlns="http://www.w3.org/2000/svg"
                   aria-label="private-outline"
                   viewBox="0 0 32 32"

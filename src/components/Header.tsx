@@ -53,11 +53,6 @@ export default function Header({ popup }) {
           const modal = modalRef.current
           modal.classList.toggle('modal-open')
         }}>
-        <style jsx global>{`
-          body {
-            overflow-y: hidden;
-          }
-        `}</style>
         <div
           className="modal-content"
           onClick={event => event.stopPropagation()}>

@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-import TOC from '../../components/TOC.tsx'
+import TOC from '../../components/TOC'
 import { getCollection, getEntry } from 'astro:content'
 import dayjs from 'dayjs'
 
@@ -21,7 +21,7 @@ const webring = await (
   await fetch('https://365days-of-making.vercel.app/api/webring')
 ).json()
 
-export const prerender = false
+export const prerender = true
 ---
 
 <style is:global lang="scss">
@@ -36,16 +36,34 @@ export const prerender = false
       display: flex;
       width: 75vw;
     }
+
+    @media screen and (min-width: $md) and (max-width: $lg) {
+      width: 95vw;
+    }
+  }
+
+  .toc-wrapper {
+    background-color: var(--background);
+    align-self: flex-start;
+    min-width: calc(15vw - 4rem);
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 997;
+
+    @media screen and (max-width: $md) {
+      padding-top: calc((48px - 32px) / 2);
+    }
+
+    @media screen and (min-width: $md) {
+      padding-top: 2rem;
+    }
   }
 
   .toc {
     align-self: flex-start;
     font-family: var(--font-serif);
     font-size: 0.8rem;
-    min-width: calc(15vw - 4rem);
-    padding-top: 2rem;
-    position: sticky;
-    top: 0;
 
     * {
       font-weight: normal;
@@ -54,8 +72,54 @@ export const prerender = false
     }
   }
 
+  #sidebar {
+    margin-left: -100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--background);
+    height: 100%;
+    z-index: 998;
+    padding: 2rem;
+    border-right: 1px dashed var(--theme);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  @keyframes slide {
+    from {
+      margin-left: -100vw;
+    }
+    to {
+      margin-left: 0;
+    }
+  }
+
+  .sidebar-open {
+    animation: slide 0.4s forwards;
+  }
+
+  .sidebar-close {
+    animation: slide 0.4s forwards reverse;
+  }
+
+  .sidebar-button {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: color 0.2s;
+    text-align: left;
+
+    @media screen and (min-width: $md) {
+      display: none;
+    }
+  }
+
   .entry {
     @media screen and (min-width: $md) {
+      max-width: calc(70vw - 4rem);
+    }
+
+    @media screen and (min-width: $lg) {
       max-width: calc(60vw - 4rem);
     }
 
@@ -68,10 +132,27 @@ export const prerender = false
   }
 </style>
 
+<script>
+  const toggle = () => {
+    // Open sidebar if on right screen size
+    if (window.innerWidth < 767.98)
+      document.getElementById('sidebar').classList.toggle('sidebar-open')
+  }
+
+  window.onload = () => {
+    document.querySelectorAll('.sidebar-button').forEach(button => {
+      button.addEventListener('click', toggle)
+    })
+  }
+</script>
+
 <Layout title="Entry" description="Entry" popup={true} webring={webring}>
-  <div class="container">
-    <TOC client:load headings={headings} />
-    <div class="toc desktop">
+  <div id="sidebar">
+    <button
+      class="sidebar-button"
+      style={{ fontSize: '1.5rem', marginBottom: '0.995rem' }}>&larr;</button
+    >
+    <div class="toc mobile">
       {
         headings.map((heading, idx) => {
           let prevDepth = idx > 0 ? headings[idx - 1].depth : Infinity
@@ -135,6 +216,101 @@ export const prerender = false
           }
         })
       }
+    </div>
+  </div>
+  <div class="container">
+    <div class="toc-wrapper">
+      <button
+        class="sidebar-button"
+        style={{ marginLeft: 'calc(32px - 48px)' }}>
+        <svg
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          stroke-linejoin="round"
+          stroke-miterlimit="1.414"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="menu"
+          viewBox="0 0 32 32"
+          preserveAspectRatio="xMidYMid meet"
+          fill="currentColor"
+          width="48"
+          height="48"
+          ><g
+            ><path
+              d="M9,10c0,-0.552 0.448,-1 1,-1l12,0c0.552,0 1,0.448 1,1c0,0.552 -0.448,1 -1,1l-12,0c-0.552,0 -1,-0.448 -1,-1Z"
+            ></path><path
+              d="M9,15c0,-0.552 0.448,-1 1,-1l12,0c0.552,0 1,0.448 1,1c0,0.552 -0.448,1 -1,1l-12,0c-0.552,0 -1,-0.448 -1,-1Z"
+            ></path><path
+              d="M9,20c0,-0.552 0.448,-1 1,-1l12,0c0.552,0 1,0.448 1,1c0,0.552 -0.448,1 -1,1l-12,0c-0.552,0 -1,-0.448 -1,-1Z"
+            ></path></g
+          ></svg
+        >
+      </button>
+      <div class="toc desktop">
+        {
+          headings.map((heading, idx) => {
+            let prevDepth = idx > 0 ? headings[idx - 1].depth : Infinity
+            switch (heading.depth) {
+              case 1:
+                return (
+                  <h1>
+                    <a href={`#${heading.slug}`}>{heading.text}</a>
+                  </h1>
+                )
+              case 2:
+                return (
+                  <h2>
+                    <a
+                      href={`#${heading.slug}`}
+                      style={{ marginLeft: prevDepth < 2 ? '4px' : '' }}>
+                      {heading.text}
+                    </a>
+                  </h2>
+                )
+              case 3:
+                return (
+                  <h3>
+                    <a
+                      href={`#${heading.slug}`}
+                      style={{ marginLeft: prevDepth < 3 ? '5px' : '' }}>
+                      {heading.text}
+                    </a>
+                  </h3>
+                )
+              case 4:
+                return (
+                  <h4>
+                    <a
+                      href={`#${heading.slug}`}
+                      style={{ marginLeft: prevDepth < 3 ? '6px' : '' }}>
+                      {heading.text}
+                    </a>
+                  </h4>
+                )
+              case 5:
+                return (
+                  <h5>
+                    <a
+                      href={`#${heading.slug}`}
+                      style={{ marginLeft: prevDepth < 3 ? '7px' : '' }}>
+                      {heading.text}
+                    </a>
+                  </h5>
+                )
+              case 6:
+                return (
+                  <h6>
+                    <a
+                      href={`#${heading.slug}`}
+                      style={{ marginLeft: prevDepth < 3 ? '8px' : '' }}>
+                      {heading.text}
+                    </a>
+                  </h6>
+                )
+            }
+          })
+        }
+      </div>
     </div>
     <div class="entry">
       <div class="prose">
