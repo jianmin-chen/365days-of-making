@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 
 export default function Header({ popup }) {
   const modalRef = useRef(null)
@@ -7,9 +7,11 @@ export default function Header({ popup }) {
     <>
       {popup !== false && (
         <button
+          className="special"
           id="modal-button"
           onClick={() => {
-            alert('hi')
+            const modal = modalRef.current
+            modal.classList.toggle('modal-open')
           }}>
           <span>psst: you can subscribe to updates!</span>
           <img src="/dino.png" />
@@ -39,20 +41,70 @@ export default function Header({ popup }) {
             </h2>
             <h2>/</h2>
             <h2>
-              <a href="/start">Start your own!</a>
+              <a href="/start">About & Start your own!</a>
             </h2>
           </nav>
         </div>
       </header>
-      <div className="modal" ref={modalRef}>
-        <div className="modal-content">
-          <span className="close">&times;</span>
-          <p>
+      <div
+        className="modal"
+        ref={modalRef}
+        onClick={() => {
+          const modal = modalRef.current
+          modal.classList.toggle('modal-open')
+        }}>
+        <style jsx global>{`
+          body {
+            overflow-y: hidden;
+          }
+        `}</style>
+        <div
+          className="modal-content"
+          onClick={event => event.stopPropagation()}>
+          <span
+            className="close"
+            onClick={() => {
+              const modal = modalRef.current
+              modal.classList.toggle('modal-open')
+            }}>
+            &times;
+          </span>
+          <p style={{ marginBottom: '0', marginTop: '0' }}>
             My goal with this blog is to create helpful content for front-end
             web devs, and my newsletter is no different! I'll let you know when
             I publish new content, and I'll even share exclusive newsletter-only
             content now and then.
           </p>
+          <form
+            onSubmit={event => {
+              event.preventDefault()
+              if (!event.target.email) {
+                return
+              }
+
+              fetch('/api/subscribe', {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  email: event.target.email
+                })
+              })
+                .then(res => res.json())
+                .then(json => {})
+                .catch(err => {})
+            }}>
+            <input
+              placeholder="Email"
+              autoComplete="off"
+              name="email"
+              type="email"
+              required
+            />
+            <button>&rarr;</button>
+          </form>
         </div>
       </div>
     </>

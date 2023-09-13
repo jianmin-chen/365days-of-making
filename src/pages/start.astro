@@ -5,6 +5,11 @@ import { getEntry } from 'astro:content'
 const data = await getEntry('content', 'start')
 const { headings, Content } = await data.render()
 
+// Get webring
+const webring = await (
+  await fetch('https://365days-of-making.vercel.app/api/webring')
+).json()
+
 export const prerender = true
 ---
 

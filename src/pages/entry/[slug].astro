@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro'
+import TOC from '../../components/TOC.tsx'
 import { getCollection, getEntry } from 'astro:content'
 import dayjs from 'dayjs'
 
@@ -15,16 +16,26 @@ const data = await getEntry('entries', slug)
 const { headings, Content } = await data.render()
 const { date, day, title } = data.data
 
-export const prerender = true
+// Get webring
+const webring = await (
+  await fetch('https://365days-of-making.vercel.app/api/webring')
+).json()
+
+export const prerender = false
 ---
 
 <style is:global lang="scss">
+  @import '../../ui/variables.scss';
+
   .container {
-    display: flex;
-    width: 75vw;
     margin: 0 auto;
     padding: 2rem;
     gap: 2rem;
+
+    @media screen and (min-width: $md) {
+      display: flex;
+      width: 75vw;
+    }
   }
 
   .toc {
@@ -44,13 +55,23 @@ export const prerender = true
   }
 
   .entry {
-    max-width: calc(60vw - 4rem);
+    @media screen and (min-width: $md) {
+      max-width: calc(60vw - 4rem);
+    }
+
+    #title {
+      margin-top: 0.995rem;
+      @media screen and (min-width: $md) {
+        margin-top: 0;
+      }
+    }
   }
 </style>
 
-<Layout title="Entry" description="Entry" popup={true}>
+<Layout title="Entry" description="Entry" popup={true} webring={webring}>
   <div class="container">
-    <div class="toc">
+    <TOC client:load headings={headings} />
+    <div class="toc desktop">
       {
         headings.map((heading, idx) => {
           let prevDepth = idx > 0 ? headings[idx - 1].depth : Infinity
@@ -120,7 +141,7 @@ export const prerender = true
         <p style={{ color: 'var(--theme)', marginBottom: '8px' }}>
           {dayjs(date).format('MMM DD, YYYY')}
         </p>
-        <h1 style={{ lineHeight: 1.2, marginTop: 0 }}>Day {day}: {title}</h1>
+        <h1 style={{ lineHeight: 1.2 }} id="title">Day {day}: {title}</h1>
         <Content />
         <p>Have a question? Fire below.</p>
       </div>

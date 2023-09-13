@@ -1,14 +1,21 @@
 ---
 import '../ui/globals.scss'
 import Header from '../components/Header.tsx'
+import Footer from '../components/Footer.tsx'
+
+interface Webring {
+  member: string
+  url: string
+}
 
 export interface Props {
   title: string | undefined
   description: string | undefined
   popup: boolean | undefined
+  webring: Array<Webring> | undefined
 }
 
-let { title, description, popup } = Astro.props
+let { title, description, popup, webring } = Astro.props
 title = `365 Days of Making | ${title}` || '365 Days of Making'
 description = description || ''
 popup = popup || false
@@ -24,9 +31,10 @@ popup = popup || false
     <title>{title}</title>
   </head>
   <body>
-    <Header popup={popup} />
+    <Header client:load popup={popup} />
     <main>
       <slot />
     </main>
+    {webring != undefined && <Footer webring={webring} />}
   </body>
 </html>

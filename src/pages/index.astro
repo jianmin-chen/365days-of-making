@@ -30,10 +30,17 @@ const getDates = (startDate: Date, stop: number) => {
 
 const dates = getDates(new Date(import.meta.env.PUBLIC_START_DATE), 365)
 
+// Get webring
+const webring = await (
+  await fetch('https://365days-of-making.vercel.app/api/webring')
+).json()
+
 export const prerender = true
 ---
 
 <style is:global lang="scss">
+  @import '../ui/variables.scss';
+
   #map {
     display: flex;
     flex-wrap: wrap;
@@ -41,22 +48,29 @@ export const prerender = true
     gap: 2rem;
     align-items: stretch;
 
-    .entry:nth-child(4n + 5) {
-      &::before {
-        border-top: 3px dotted var(--theme);
-        content: '';
-        position: absolute;
-        transform: rotate(345deg);
-        top: 0;
-        left: 0;
-        width: calc(100vw - 4rem);
-        z-index: 0;
-      }
+    @media screen and (max-width: $lg) {
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    .entry:nth-child(4n) {
-      &::after {
-        width: 0;
+    @media screen and (min-width: $md) {
+      .entry:nth-child(4n + 5) {
+        &::before {
+          border-top: 3px dotted var(--theme);
+          content: '';
+          position: absolute;
+          transform: rotate(345deg);
+          top: 0;
+          left: 0;
+          width: calc(100vw - 4rem);
+          z-index: 0;
+        }
+      }
+
+      .entry:nth-child(4n) {
+        &::after {
+          width: 0;
+        }
       }
     }
 
@@ -73,11 +87,21 @@ export const prerender = true
 
       &::after {
         position: absolute;
-        left: 100%;
-        top: 50%;
-        border-top: 3px dotted var(--theme);
         content: '';
-        width: 2rem;
+
+        @media screen and (min-width: $md) {
+          left: 100%;
+          top: 50%;
+          border-top: 3px dotted var(--theme);
+          width: 2rem;
+        }
+
+        @media screen and (max-width: $md) {
+          top: 100%;
+          left: 50%;
+          border-left: 3px dotted var(--theme);
+          height: 2rem;
+        }
       }
 
       .header {
@@ -124,7 +148,11 @@ export const prerender = true
   }
 </style>
 
-<Layout title="Entries" description="Timeline of entries!" popup={false}>
+<Layout
+  title="Entries"
+  description="Timeline of entries!"
+  popup={false}
+  webring={webring}>
   <div id="map">
     {
       dates.map((date, idx) => {
@@ -145,10 +173,10 @@ export const prerender = true
             ) : (
               <div class="excerpt">
                 <svg
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   clip-rule="evenodd"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="1.414"
+                  strokeLinejoin="round"
+                  strokeMiterlimit="1.414"
                   xmlns="http://www.w3.org/2000/svg"
                   aria-label="private-outline"
                   viewBox="0 0 32 32"
