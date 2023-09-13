@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { app } from '../firebase/server'
+import { getAuth } from 'firebase-admin/auth'
+
+export const prerender = true
+
+// Check if the user is authenticated
+const auth = getAuth(app)
+if (Astro.cookies.has('session')) {
+  const sessionCookie = Astro.cookies.get('session').value
+  const decodedCookie = await auth.verifySessionCookie(sessionCookie)
+  if (decodedCookie) return Astro.redirect('/dashboard')
+}
+---
+
+<Layout title="Dashboard" description="Sign in first">
+  <form action="/api/auth/signin" method="POST">
+    <label for="email">Email</label>
+    <input type="email" name="email" required />
+    <label for="password">Password</label>
+    <input type="password" name="password" required />
+    <button type="submit">Sign in</button>
+  </form>
+</Layout>
+
+<script>
+  import {
+    getAuth,
+    inMemoryPersistence,
+    signInWithEmailAndPassword
+  } from 'firebase/auth'
+  import { app } from '../firebase/client'
+
+  const auth = getAuth(app)
+  auth.setPersistence(inMemoryPersistence)
+
+  const form = document.querySelector('form') as HTMLFormElement
+  form.addEventListener('submit', async event => {
+    event.preventDefault()
+
+    const formData = new FormData(form)
+    const email = formData.get('email')?.toString()
+    const password = formData.get('password')?.toString()
+
+    if (!email || !password) return
+
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    )
+    const idToken = await userCredential.user.getIdToken()
+    const response = await fetch('/api/auth/signin', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
+    })
+
+    if (response.redirected) window.location.assign(response.url)
+  })
+</script>

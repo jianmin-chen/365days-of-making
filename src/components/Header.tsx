@@ -3,6 +3,14 @@ import { useRef, useEffect } from 'react'
 export default function Header({ popup }) {
   const modalRef = useRef(null)
 
+  useEffect(() => {
+    if (document)
+      document.querySelector('.subscribe').addEventListener('click', () => {
+        const modal = modalRef.current
+        modal.classList.toggle('modal-open')
+      })
+  }, [])
+
   return (
     <>
       {popup !== false && (

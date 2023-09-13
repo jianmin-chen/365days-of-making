@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Editor from '../components/Editor'
+import { app } from '../firebase/server'
+import { getAuth } from 'firebase-admin/auth'
+
+export const prerender = true
+
+const auth = getAuth(app)
+
+// Check current session
+if (!Astro.cookies.has('session')) return Astro.redirect('/signin')
+const sessionCookie = Astro.cookies.get('session').value
+const decodedCookie = await auth.verifySessionCookie(sessionCookie)
+const user = await auth.getUser(decodedCookie.uid)
+
+if (!user) return Astro.redirect('/signin')
+---
+
+<style is:global lang="scss">
+  .editor {
+    border: 1px solid;
+  }
+</style>
+
+<Layout title="Dashboard" description="Dashboard for sending applications">
+  <Editor />
+</Layout>

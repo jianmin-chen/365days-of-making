@@ -85,7 +85,7 @@ export const prerender = true
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   }
 
-  @keyframes slide {
+  @keyframes slide-left {
     from {
       margin-left: -100vw;
     }
@@ -95,11 +95,30 @@ export const prerender = true
   }
 
   .sidebar-open {
-    animation: slide 0.4s forwards;
+    animation: slide-left 0.4s forwards;
   }
 
-  .sidebar-close {
-    animation: slide 0.4s forwards reverse;
+  .sidebar-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      background-color: transparent;
+      border: 0;
+      cursor: pointer;
+      transition: color 0.2s;
+      text-align: left;
+    }
+
+    .subscribe {
+      color: var(--theme);
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+    }
+
+    @media screen and (min-width: $md) {
+      display: none;
+    }
   }
 
   .sidebar-button {
@@ -108,10 +127,6 @@ export const prerender = true
     cursor: pointer;
     transition: color 0.2s;
     text-align: left;
-
-    @media screen and (min-width: $md) {
-      display: none;
-    }
   }
 
   .entry {
@@ -142,6 +157,10 @@ export const prerender = true
   window.onload = () => {
     document.querySelectorAll('.sidebar-button').forEach(button => {
       button.addEventListener('click', toggle)
+    })
+
+    document.querySelectorAll('.mobile a').forEach(heading => {
+      heading.addEventListener('click', toggle)
     })
   }
 </script>
@@ -220,32 +239,35 @@ export const prerender = true
   </div>
   <div class="container">
     <div class="toc-wrapper">
-      <button
-        class="sidebar-button"
-        style={{ marginLeft: 'calc(32px - 48px)' }}>
-        <svg
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          stroke-linejoin="round"
-          stroke-miterlimit="1.414"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="menu"
-          viewBox="0 0 32 32"
-          preserveAspectRatio="xMidYMid meet"
-          fill="currentColor"
-          width="48"
-          height="48"
-          ><g
-            ><path
-              d="M9,10c0,-0.552 0.448,-1 1,-1l12,0c0.552,0 1,0.448 1,1c0,0.552 -0.448,1 -1,1l-12,0c-0.552,0 -1,-0.448 -1,-1Z"
-            ></path><path
-              d="M9,15c0,-0.552 0.448,-1 1,-1l12,0c0.552,0 1,0.448 1,1c0,0.552 -0.448,1 -1,1l-12,0c-0.552,0 -1,-0.448 -1,-1Z"
-            ></path><path
-              d="M9,20c0,-0.552 0.448,-1 1,-1l12,0c0.552,0 1,0.448 1,1c0,0.552 -0.448,1 -1,1l-12,0c-0.552,0 -1,-0.448 -1,-1Z"
-            ></path></g
-          ></svg
-        >
-      </button>
+      <div class="sidebar-buttons">
+        <button
+          class="sidebar-button"
+          style={{ marginLeft: 'calc(32px - 48px)' }}>
+          <svg
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            stroke-linejoin="round"
+            stroke-miterlimit="1.414"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="menu"
+            viewBox="0 0 32 32"
+            preserveAspectRatio="xMidYMid meet"
+            fill="currentColor"
+            width="48"
+            height="48"
+            ><g
+              ><path
+                d="M9,10c0,-0.552 0.448,-1 1,-1l12,0c0.552,0 1,0.448 1,1c0,0.552 -0.448,1 -1,1l-12,0c-0.552,0 -1,-0.448 -1,-1Z"
+              ></path><path
+                d="M9,15c0,-0.552 0.448,-1 1,-1l12,0c0.552,0 1,0.448 1,1c0,0.552 -0.448,1 -1,1l-12,0c-0.552,0 -1,-0.448 -1,-1Z"
+              ></path><path
+                d="M9,20c0,-0.552 0.448,-1 1,-1l12,0c0.552,0 1,0.448 1,1c0,0.552 -0.448,1 -1,1l-12,0c-0.552,0 -1,-0.448 -1,-1Z"
+              ></path></g
+            ></svg
+          >
+        </button>
+        <button class="subscribe">Subscribe to updates!</button>
+      </div>
       <div class="toc desktop">
         {
           headings.map((heading, idx) => {
