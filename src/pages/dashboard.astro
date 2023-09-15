@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import Editor from '../components/Editor'
 import { app } from '../firebase/server'
 import { getAuth } from 'firebase-admin/auth'
+import { getFirestore } from 'firebase-admin/firestore'
 
 export const prerender = true
 
@@ -14,15 +15,130 @@ const sessionCookie = Astro.cookies.get('session').value
 const decodedCookie = await auth.verifySessionCookie(sessionCookie)
 const user = await auth.getUser(decodedCookie.uid)
 
+// Get current subscribers
+const db = getFirestore(app)
+const subscribersRef = await db.collection('subscribers').get()
+const subscribers = subscribersRef.docs.map(doc => doc.data())
+
 if (!user) return Astro.redirect('/signin')
 ---
 
 <style is:global lang="scss">
-  .editor {
-    border: 1px solid;
+  @import '../ui/variables.scss';
+
+  button {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.995rem;
+    transition: color 0.2s;
+    padding: 0;
+
+    &:hover {
+      color: var(--theme);
+    }
+  }
+
+  #container {
+    font-family: var(--font-serif);
+    padding: 2rem;
+    padding-top: 1rem;
+    width: 100vw;
+
+    @media screen and (min-width: $md) and (max-width: $lg) {
+      padding-inline: 0;
+    }
+
+    @media screen and (max-width: $md) {
+      > div {
+        border-bottom: 1px dashed var(--theme);
+        padding-bottom: 1rem;
+      }
+    }
+
+    @media screen and (min-width: $md) {
+      display: flex;
+
+      > div {
+        border-right: 1px dashed var(--theme);
+        flex: 50%;
+      }
+    }
+  }
+
+  #signout {
+    margin: 2rem;
+    margin-bottom: 0;
+    display: flex;
+  }
+
+  #editor {
+    margin: 0 auto;
+
+    @media screen and (min-width: $md) {
+      padding: 0 2rem;
+    }
+  }
+
+  #subscribers {
+    padding: 2rem;
+
+    @media screen and (max-width: $md) {
+      padding-inline: 0;
+    }
+  }
+
+  .prose {
+    font-size: 0.995rem !important;
+
+    code,
+    pre {
+      font-size: 0.8rem !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: var(--font-serif);
+    }
   }
 </style>
 
+<script>
+  document.getElementById('signout').addEventListener('submit', async event => {
+    event.preventDefault()
+    const response = await fetch('/api/auth/signout')
+    if (response.redirected) window.location.assign(response.url)
+  })
+</script>
+
 <Layout title="Dashboard" description="Dashboard for sending applications">
-  <Editor />
+  <form id="signout" method="POST">
+    <button>Sign out</button>
+  </form>
+  <div id="container">
+    <div>
+      <Editor client:load />
+    </div>
+    <div class="prose" id="subscribers">
+      <table>
+        <tr>
+          <th
+            ><h2 style={{ margin: 0 }}>{subscribers.length} subscribers</h2></th
+          >
+        </tr>
+        {
+          subscribers.map(sub => (
+            <tr>
+              <td>{sub.email}</td>
+            </tr>
+          ))
+        }
+      </table>
+    </div>
+  </div>
 </Layout>

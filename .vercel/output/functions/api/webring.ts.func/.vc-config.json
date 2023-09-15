@@ -1,0 +1,5 @@
+{
+	"runtime": "nodejs18.x",
+	"handler": "dist/pages/api/entry.webring.astro.mjs",
+	"launcherType": "Nodejs"
+}

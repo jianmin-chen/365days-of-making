@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-import TOC from '../../components/TOC'
 import { getCollection, getEntry } from 'astro:content'
 import dayjs from 'dayjs'
 
@@ -9,6 +8,12 @@ export async function getStaticPaths() {
   return entries.map((entry: { slug: string }) => ({
     params: { slug: entry.slug }
   }))
+}
+
+Date.prototype.addDays = function (days) {
+  let date = new Date(this.valueOf())
+  date.setDate(date.getDate() + days)
+  return date
 }
 
 const { slug } = Astro.params
@@ -83,6 +88,7 @@ export const prerender = true
     padding: 2rem;
     border-right: 1px dashed var(--theme);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    min-width: 200px;
   }
 
   @keyframes slide-left {
@@ -114,9 +120,10 @@ export const prerender = true
       color: var(--theme);
       font-family: var(--font-serif);
       font-size: 1.1rem;
+      margin-bottom: calc((48px - 32px) / 2);
     }
 
-    @media screen and (min-width: $md) {
+    @media screen and (orientation: landscape) and (min-height: $sm) {
       display: none;
     }
   }
@@ -148,13 +155,17 @@ export const prerender = true
 </style>
 
 <script>
-  const toggle = () => {
+  const toggle = (choice: boolean = undefined) => {
     // Open sidebar if on right screen size
-    if (window.innerWidth < 767.98)
-      document.getElementById('sidebar').classList.toggle('sidebar-open')
+    const sidebar = document.getElementById('sidebar')
+    sidebar.classList.toggle('sidebar-open')
   }
 
   window.onload = () => {
+    document.getElementById('sidebar').addEventListener('click', event => {
+      event.stopPropagation()
+    })
+
     document.querySelectorAll('.sidebar-button').forEach(button => {
       button.addEventListener('click', toggle)
     })
@@ -337,7 +348,7 @@ export const prerender = true
     <div class="entry">
       <div class="prose">
         <p style={{ color: 'var(--theme)', marginBottom: '8px' }}>
-          {dayjs(date).format('MMM DD, YYYY')}
+          {dayjs(date.addDays(1)).format('MMM DD, YYYY')}
         </p>
         <h1 style={{ lineHeight: 1.2 }} id="title">Day {day}: {title}</h1>
         <Content />

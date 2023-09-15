@@ -1,0 +1,1 @@
+.container{display:flex;width:75vw;margin:0 auto;padding:2rem;gap:2rem}.toc{align-self:flex-start;font-family:var(--font-serif);font-size:.8rem;min-width:calc(15vw - 4rem);padding-top:2rem;position:sticky;top:0}.toc *{font-weight:400;margin-top:0;margin-bottom:.3rem}.entry{max-width:calc(60vw - 4rem)}

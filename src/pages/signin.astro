@@ -14,15 +14,38 @@ if (Astro.cookies.has('session')) {
 }
 ---
 
-<Layout title="Dashboard" description="Sign in first">
-  <form action="/api/auth/signin" method="POST">
-    <label for="email">Email</label>
-    <input type="email" name="email" required />
-    <label for="password">Password</label>
-    <input type="password" name="password" required />
-    <button type="submit">Sign in</button>
-  </form>
-</Layout>
+<style is:global lang="scss">
+  form {
+    max-width: 50vw;
+    margin: 4rem auto;
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+
+    button {
+      background-color: var(--theme);
+      border: 0;
+      cursor: pointer;
+      align-self: flex-end;
+      width: fit-content;
+      color: var(--background);
+      font: inherit;
+      font-family: var(--font-sans);
+      font-size: 1.3rem;
+      padding: 7px 14px;
+    }
+
+    input {
+      background-color: white;
+      border: 2px solid var(--theme);
+      margin-bottom: 0.995rem;
+      padding: 7px 14px;
+      outline: none;
+      font: inherit;
+    }
+  }
+</style>
 
 <script>
   import {
@@ -35,29 +58,56 @@ if (Astro.cookies.has('session')) {
   const auth = getAuth(app)
   auth.setPersistence(inMemoryPersistence)
 
-  const form = document.querySelector('form') as HTMLFormElement
-  form.addEventListener('submit', async event => {
+  const form = document.getElementById('form') as HTMLFormElement
+  form.addEventListener('submit', event => {
     event.preventDefault()
 
-    const formData = new FormData(form)
-    const email = formData.get('email')?.toString()
-    const password = formData.get('password')?.toString()
+    const submit = async () => {
+      const formData = new FormData(form)
+      const email = formData.get('email')?.toString()
+      const password = formData.get('password')?.toString()
 
-    if (!email || !password) return
+      if (!email || !password) return
 
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    )
-    const idToken = await userCredential.user.getIdToken()
-    const response = await fetch('/api/auth/signin', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${idToken}`
-      }
-    })
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+      const idToken = await userCredential.user.getIdToken()
+      const response = await fetch('/api/auth/signin', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${idToken}`
+        }
+      })
 
-    if (response.redirected) window.location.assign(response.url)
+      if (!response.ok) console.log(response.text)
+      if (response.redirected) window.location.assign(response.url)
+    }
+
+    submit()
   })
 </script>
+
+<Layout title="Dashboard" description="Sign in first">
+  <form id="form">
+    <label for="email">Email</label>
+    <input
+      autocomplete="off"
+      type="email"
+      name="email"
+      placeholder="jc@hackclub.com"
+      required
+    />
+    <label for="password">Password</label>
+    <input
+      autocomplete="off"
+      type="password"
+      name="password"
+      placeholder="Your password"
+      required
+    />
+    <button type="submit">Sign in</button>
+  </form>
+</Layout>

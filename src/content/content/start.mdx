@@ -2,21 +2,44 @@
 title: Start your own
 ---
 
-First, about this specific one! It's the original one, with a start date of 09/25/2023 and a time period of 365 days, or exactly one year.
-
-So what exactly do [I](https://jianminchen.com) plan to do during this one year? Well, right now I'd like to get my hands to start tinkering a tad bit more with hard(ware) things, and I'd also like to explore low-level computer a bit more too.
-
-So I have a current list of projects I'd like to be able to build by the end of the year:
-
-- [ ] Graduation cap (or any other surface)... but add lights! PCB designed to power a grid of LEDs (e.g., 50x50) and design a [custom programming language](https://github.com/jianmin-chen/lights) to program the lights over Bluetooth with programs like Conway's Game of Life or the Life Engine. (Maybe one to hang on a wall.)
-- [ ] DIY typewriter for the iPad! Learn 3D printing (Onshape) and design parts for typewriter (keys, etc.) and then write up to custom designed PCB to have a typewriter iPad.
-- [ ] Sorting hat! Design PCB to wire up to
-- [ ] Write a explainer on Rust based on stuff you can find at
-
-And some other cool projects that I never finished but would love to finish and do a writeup on:
-
-- [ ] [`faceterm`](https://github.com/jianmin-chen/faceterm)
-
 ## How to start one
 
+Start by forking the [source](https://github.com/hackclub/365days-of-making) and then cloning your fork and installing the necessary dependencies:
+
+```
+git clone https://github.com/<your username>/365days-of-making
+cd 365days-of-making
+npm i  # or yarn install
+```
+
+We'll also need to set up Firebase so you can get people subbed to your updates. (An RSS feed is soon to be added.) Head over to [Firebase](https://firebase.google.com), log into the appropriate account, and click on "Go to console" in the top right corner. Click on the big plus button that shows up, which will take you through creating a Firebase project.
+
+Once you have one created, we're going to create a web app in our Firebase project. Click on the code icon that will show up and follow the instructions to create a web app. Make sure you save the Firebase configuration, it'll look like this:
+
+```js
+const firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
+}
+```
+
+This will go inside `/src/firebase/client.ts`. Replace the current `firebaseConfig` with yours.
+
+That's what the client will be able to use (backed up by secure rules). Since we're the admin, we'd like to have full access
+
 Move `setup.ts` into `/pages/api/auth`. We're going to set up an admin account with your personal email (or as many as you'd like, so make sure to)
+
+Now that you've got everything set up, let's write our first entry. This can be about anything! For me, I introduced myself, what this was about, why I was doing it, and what I was going to be doing.
+
+Also feel free to edit this page you're reading right now - that's in `/src/content/content/start.mdx`, although it should stay relatively the same.
+
+Once you've written your first entry, let's deploy. Set up an GitHub repository, and push the contents of your folder to the repository. I highly recommend starting from
+
+## Adding yourself to the webring
+
+Please add yourself to the webring! I personally would love to check out other people's 365 days of making.

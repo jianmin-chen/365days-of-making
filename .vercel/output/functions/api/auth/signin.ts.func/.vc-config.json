@@ -1,0 +1,5 @@
+{
+	"runtime": "nodejs18.x",
+	"handler": "dist/pages/api/auth/entry.signin.astro.mjs",
+	"launcherType": "Nodejs"
+}

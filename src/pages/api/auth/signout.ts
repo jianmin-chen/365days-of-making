@@ -5,5 +5,5 @@ export const GET: APIRoute = async ({ redirect, cookies }) => {
     path: '/'
   })
 
-  return new Response('', { status: 200 })
+  return redirect('/')
 }

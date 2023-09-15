@@ -1,11 +1,12 @@
 import { useRef, useEffect } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function Header({ popup }) {
   const modalRef = useRef(null)
 
   useEffect(() => {
     if (document)
-      document.querySelector('.subscribe').addEventListener('click', () => {
+      document.querySelector('.subscribe')?.addEventListener('click', () => {
         const modal = modalRef.current
         modal.classList.toggle('modal-open')
       })
@@ -13,6 +14,13 @@ export default function Header({ popup }) {
 
   return (
     <>
+      <Toaster
+        toastOptions={{
+          style: {
+            fontFamily: 'sans-serif'
+          }
+        }}
+      />
       {popup !== false && (
         <button
           className="special"
@@ -81,10 +89,7 @@ export default function Header({ popup }) {
           <form
             onSubmit={event => {
               event.preventDefault()
-              if (!event.target.email) {
-                return
-              }
-
+              if (!event.target.email?.value) return
               fetch('/api/subscribe', {
                 method: 'POST',
                 headers: {
@@ -92,14 +97,21 @@ export default function Header({ popup }) {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                  email: event.target.email
+                  email: event.target.email.value
                 })
+              }).then(res => {
+                const modal = modalRef.current
+                modal.classList.remove('modal-open')
+                event.target.reset()
+                if (res.ok) toast.success('Subscribed!')
+                else
+                  toast.error(
+                    'Oops, there was an error subscribing - try again?'
+                  )
               })
-                .then(res => res.json())
-                .then(json => {})
-                .catch(err => {})
             }}>
             <input
+              autoFocus={true}
               placeholder="Email"
               autoComplete="off"
               name="email"

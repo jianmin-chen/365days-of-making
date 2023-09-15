@@ -218,10 +218,6 @@ footer {
       width: 100%;
       font: inherit;
       outline: 0;
-
-      @media screen and (min-width: $md) {
-        font-size: 2rem;
-      }
     }
 
     span {
@@ -278,6 +274,10 @@ footer {
     @media screen and (max-width: $md) {
       display: none;
     }
+
+    @media screen and (orientation: landscape) and (max-height: $sm) {
+      display: none;
+    }
   }
 }
 
@@ -325,6 +325,30 @@ footer {
   .contains-task-list {
     list-style: none;
     padding-left: 0;
+
+    .contains-task-list {
+      padding-left: 20px;
+    }
+  }
+
+  li {
+    p {
+      margin: 0;
+    }
+  }
+
+  table {
+    text-align: left;
+
+    th {
+      border-bottom: 1px solid var(--theme);
+      padding: 1rem 0;
+    }
+
+    td {
+      border-bottom: 1px dashed var(--theme);
+      padding: 1rem 0;
+    }
   }
 
   @media screen and (max-width: $md) {
