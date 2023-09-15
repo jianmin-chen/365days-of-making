@@ -20,7 +20,7 @@ Date.prototype.addDays = function (days) {
 
 const getDates = (startDate: Date, stop: number) => {
   let dates = []
-  let curr = startDate
+  let curr = startDate.addDays(1)
   for (let i = 0; i < stop; i++) {
     dates.push(dayjs(curr).format('MMM DD, YYYY'))
     curr = curr.addDays(1)
@@ -28,12 +28,18 @@ const getDates = (startDate: Date, stop: number) => {
   return dates
 }
 
-const dates = getDates(new Date(import.meta.env.PUBLIC_START_DATE), 365)
+const dates = getDates(
+  new Date(import.meta.env.PUBLIC_START_DATE),
+  import.meta.env.NUMBER_OF_DAYS || 365
+)
 
 // Get webring
-const webring = await (
-  await fetch('https://365days-of-making.vercel.app/api/webring')
-).json()
+let webring = undefined
+try {
+  webring = await (
+    await fetch('https://365days-of-making.vercel.app/api/webring')
+  ).json()
+} catch {}
 
 export const prerender = true
 ---

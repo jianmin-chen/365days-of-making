@@ -13,9 +13,9 @@
   "dependencies": {
     "@astrojs/mdx": "^1.0.2",
     "@astrojs/react": "^3.0.2",
+    "@astrojs/rss": "^3.0.0",
     "@astrojs/vercel": "^4.0.5",
     "@hackclub/icons": "^0.0.14",
-    "@supabase/supabase-js": "^2.33.1",
     "@tiptap/extension-code-block-lowlight": "^2.1.8",
     "@tiptap/extension-heading": "^2.1.8",
     "@tiptap/extension-highlight": "^2.1.8",

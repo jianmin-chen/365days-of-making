@@ -24,6 +24,10 @@
 			"dest": "dashboard.astro"
 		},
 		{
+			"src": "^\\/feed\\.xml$",
+			"dest": "feed.xml.js"
+		},
+		{
 			"src": "^\\/signin\\/?$",
 			"dest": "signin.astro"
 		},

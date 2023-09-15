@@ -313,6 +313,10 @@ footer {
     font-family: var(--font-mono);
   }
 
+  img {
+    max-width: 100%;
+  }
+
   pre {
     font-size: 1.1rem;
     padding: 2rem;
@@ -358,5 +362,11 @@ footer {
     pre {
       font-size: 1.1rem;
     }
+  }
+}
+
+.giscus {
+  @media screen and (max-width: $md) {
+    padding-inline: 2rem;
   }
 }

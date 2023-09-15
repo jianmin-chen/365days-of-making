@@ -22,9 +22,12 @@ const { headings, Content } = await data.render()
 const { date, day, title } = data.data
 
 // Get webring
-const webring = await (
-  await fetch('https://365days-of-making.vercel.app/api/webring')
-).json()
+let webring = undefined
+try {
+  webring = await (
+    await fetch('https://365days-of-making.vercel.app/api/webring')
+  ).json()
+} catch {}
 
 export const prerender = true
 ---
@@ -354,22 +357,23 @@ export const prerender = true
         <Content />
         <p>Have a question? Fire below.</p>
       </div>
-      <script
-        src="https://giscus.app/client.js"
-        data-repo="jianmin-chen/365days-of-making"
-        data-repo-id="R_kgDOKRAyPw"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOKRAyP84CZLWE"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="0"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="light"
-        data-lang="en"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async></script>
     </div>
   </div>
 </Layout>
+
+<script
+  src="https://giscus.app/client.js"
+  data-repo="jianmin-chen/365days-of-making"
+  data-repo-id="R_kgDOKRAyPw"
+  data-category="Announcements"
+  data-category-id="DIC_kwDOKRAyP84CZLWE"
+  data-mapping="pathname"
+  data-strict="0"
+  data-reactions-enabled="0"
+  data-emit-metadata="0"
+  data-input-position="top"
+  data-theme="light"
+  data-lang="en"
+  data-loading="lazy"
+  crossorigin="anonymous"
+  async></script>
