@@ -87,10 +87,13 @@ const subscribers = subscribersRef.docs.map(doc => doc.data())
   }
 
   #subscribers {
-    padding: 2rem;
+    @media screen and (min-width: $md) {
+      padding: 0 2rem;
+    }
 
     @media screen and (max-width: $md) {
       padding-inline: 0;
+      padding-top: 2rem;
     }
   }
 

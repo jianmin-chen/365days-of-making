@@ -2,7 +2,7 @@
 import '../ui/globals.scss'
 import Header from '../components/Header.tsx'
 import Footer from '../components/Footer.tsx'
-import { Toaster } from 'react-hot-toast'
+import Search from '../components/Search.tsx'
 
 interface Webring {
   member: string
@@ -30,9 +30,11 @@ popup = popup || false
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script src="/stork.js" type="application/javascript" is:inline></script>
   </head>
   <body>
     <Header client:load popup={popup} />
+    <Search client:only />
     <main>
       <slot />
     </main>

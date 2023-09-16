@@ -2,6 +2,10 @@
 import Layout from '../layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 import dayjs from 'dayjs'
+import { marked } from 'marked'
+import { createSt } from '../lib/search'
+
+// Create Stork file
 
 const data = await getCollection('entries')
 let entries = {}
@@ -9,7 +13,10 @@ data.map(entry => {
   let excerpt = 'No excerpt provided.'
   let nlnl = entry.body.trim().indexOf('\n\n')
   if (nlnl !== -1) excerpt = `${entry.body.slice(0, nlnl)}`
-  entries[entry.data.day] = { ...entry, excerpt }
+  entries[entry.data.day] = {
+    ...entry,
+    excerpt: excerpt.slice(0, import.meta.env.PUBLIC_EXCERPT_LENGTH || 120)
+  }
 })
 
 Date.prototype.addDays = function (days) {
@@ -173,7 +180,8 @@ export const prerender = true
             </div>
             {entries[idx + 1] !== undefined ? (
               <div class="excerpt">
-                <div set:html={entries[idx + 1].excerpt} />
+                <div set:html={marked(entries[idx + 1].excerpt)} />
+                ...
                 <a href={`/entry/${entries[idx + 1].slug}`}>Read more</a>
               </div>
             ) : (

@@ -1,0 +1,15 @@
+[input]
+base_directory = "src/content/entries"
+url_prefix = "https://365days-of-making.vercel.app/entry/"
+
+  [[input.files]]
+  path = "1.mdx"
+  url = "1"
+  title = "Starting out"
+  filetype = "Markdown"
+
+  [[input.files]]
+  path = "2.mdx"
+  url = "2"
+  title = "Robotics meeting, birthday gift"
+  filetype = "Markdown"

@@ -18,13 +18,13 @@ Once you have one created, we're going to create a web app in our Firebase proje
 
 ```js
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
-  measurementId: ""
+  apiKey: '',
+  authDomain: '',
+  projectId: '',
+  storageBucket: '',
+  messagingSenderId: '',
+  appId: '',
+  measurementId: ''
 }
 ```
 
@@ -46,7 +46,7 @@ FIREBASE_AUTH_CERT_URL=YOUR_AUTH_CERT_URL
 FIREBASE_CLIENT_CERT_URL=YOUR_CLIENT_CERT_URL
 ```
 
-Move `setup.ts` into `/pages/api/auth`. We're going to set up an admin account with your personal email (or as many as you'd like, so make sure to use the appropriate email. Or you could create multiple logins. Whatever you'd like.) 
+Move `setup.ts` into `/pages/api/auth`. We're going to set up an admin account with your personal email (or as many as you'd like, so make sure to use the appropriate email. Or you could create multiple logins. Whatever you'd like.)
 
 Now we're going to start Astro:
 
@@ -81,6 +81,12 @@ Now that you've got everything set up, let's write our first entry. This can be 
 
 Also feel free to edit this page you're reading right now - that's in `/src/content/content/start.mdx`, although it should stay relatively the same.
 
+## Deploying
+
+Let's deploy. Set up an GitHub repository, and push the contents of your folder to the repository. Once you're done, head over to [Vercel](https://vercel.com), sign up if you haven't, and create a new project. Link that project to your repository, and paste your environment variables where it asks you to.
+
+Now head over to the link Vercel gives you and you'll see your site in action!
+
 ## Setting up Giscus
 
 To get comments on your 365 days of making, set up Giscus by going to [https://giscus.app/](https://giscus.app/) and selecting your preferred options. You'll get a script that looks something like this:
@@ -109,12 +115,6 @@ You will need to replace this script at the bottom of `src/pages/start.astro` an
 ## Setting up newsletter
 
 Setting up the newsletter is a tad bit harder. I use [SendGrid](https://sendgrid.com/).
-
-## Deploying
-
-Let's deploy. Set up an GitHub repository, and push the contents of your folder to the repository. Once you're done, head over to [Vercel](https://vercel.com), sign up if you haven't, and create a new project. Link that project to your repository, and paste your environment variables where it asks you to.
-
-Now head over to the link Vercel gives you and you'll see your site in action!
 
 ## Adding yourself to the webring
 

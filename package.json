@@ -8,14 +8,14 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "format": "prettier --ignore-path ./.prettierignore --write . --plugin=prettier-plugin-astro"
+    "format": "prettier --ignore-path ./.prettierignore --write . --plugin=prettier-plugin-astro",
+    "search": "chmod +x ./search.sh && ./search.sh"
   },
   "dependencies": {
     "@astrojs/mdx": "^1.0.2",
     "@astrojs/react": "^3.0.2",
     "@astrojs/rss": "^3.0.0",
     "@astrojs/vercel": "^4.0.5",
-    "@hackclub/icons": "^0.0.14",
     "@sendgrid/mail": "^7.7.0",
     "@tiptap/extension-code-block-lowlight": "^2.1.8",
     "@tiptap/extension-heading": "^2.1.8",
@@ -38,9 +38,11 @@
     "marked": "^9.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.4.1",
+    "react-hotkeys-hook": "^4.4.1"
   },
   "devDependencies": {
+    "@iarna/toml": "^2.2.5",
     "prettier": "^3.0.3",
     "prettier-plugin-astro": "^0.12.0",
     "sass": "^1.66.1"

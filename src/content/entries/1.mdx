@@ -25,6 +25,7 @@ So I sat down and thought about what I'd like to be able to do and/or build by t
   - [ ] Write a static site generator to be used in conjunction with the web server!
   - [ ] Write a Markdown parser for the static site generator, and explore how to port that to WebAssembly for funsies
   - [ ] Write a chess engine in Rust. (Maybe pair program with [someone](https://github.com/pensquid/yobmef) on this?)
+- [ ] Learn Ruby. Don't know why for, but want to do something fun in Ruby.
 - [ ] Build a game. This is in its infant stages and I'm not sure what this entails, but we'll see.
 
 Whew, that's a lot already, and I'm 110% sure this list will grow as the year goes on! And some cool projects that I never finished but would love to finish and do a writeup on:
@@ -50,11 +51,11 @@ _No, but how?_ Oh, yeah. Let's take a look at some of these. Someone I work with
 
 ## Today
 
-Okay, so what am I planning to do today? Well, for starters, I just finished and deployed this website, which is awesome. I built it with [Astro](https://astro.build/) and [Firebase](https://firebase.google.com/), which I haven't really worked with. (Ok, I've worked with Firebase before, but it was a long time ago when I didn't know what leaking API keys meant.)
+Okay, so what am I planning to do today? Well, for starters, I finished most of this website, which is awesome. I built it with [Astro](https://astro.build/) and [Firebase](https://firebase.google.com/), which I haven't really worked with. (Ok, I've worked with Firebase before, but it was a long time ago when I didn't know what leaking API keys meant.)
 
 Most of this site is statically generated with Asto. Astro is actually really easy to use! It reminds me of [Svelte](https://svelte.dev/) but more compromising - it lets you add adapters for other libraries/frameworks. For example, the header and the webring on this site is written with React.
 
-I can [login](/signin) and write newsletters with Markdown, which gets sent using [Mailgun](https://www.mailgun.com/)'s Node wrapper. All newsletters are saved within Firebase so that you can see them if you're not interested in subbing to updates.
+I can [login](/signin) and write newsletters with Markdown, which gets sent using [Sendgrid](https://sendgrid.com)'s Node wrapper. All newsletters are saved within Firebase so that you can see them if you're not interested in subbing to updates.
 
 The comment system is powered by [`giscus`](https://giscus.app/), which lets me use GitHub Discussions for commenting with replies.
 
