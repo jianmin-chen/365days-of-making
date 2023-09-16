@@ -8,17 +8,18 @@ import Strike from '@tiptap/extension-strike'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import Underline from '@tiptap/extension-underline'
-import { EditorProvider, FloatingMenu } from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
 
 export default function Editor() {
   const extensions = [
     StarterKit,
-    Header.configure({ levels: [1, 2, 3] }),
+    Header.configure({ levels: [1, 2, 3, 4, 5, 6] }),
     Highlight,
     Image,
-    Link.configure({ autolink: true, openOnLink: true }),
+    Link.configure({ autolink: true, openOnClick: true }),
     Placeholder.configure({ placeholder: 'Start writing!' }),
     Strike,
     Subscript,
@@ -26,16 +27,9 @@ export default function Editor() {
     Underline
   ]
 
-  const handleSubmission = event => {
-    if (editor && !editor.isEmpty) {
-      // Send out email
-    }
-  }
-
-  return (
-    <div className="prose" id="editor">
-      <EditorProvider
-        content={`<p>Ah! Day one of making.</p>
+  const editor = useEditor({
+    extensions,
+    content: `<p>Ah! Day one of making.</p>
 <p>First, about this specific one! (Yes, you can start your own.) This is the original one, with a start date of 09/15/2023 and a time period of 365 days, or exactly one year.</p>
 <p>So what exactly do <a href="https://jianminchen.com">I</a> plan to do during this one year? Well, right now I’d like to get my hands to start tinkering a tad bit more with hard(ware) things, and I’d also like to explore low-level computer stuff a bit more too.</p>
 <p>So I sat down and thought about what I’d like to be able to do and/or build by the end of the year:</p>
@@ -90,9 +84,38 @@ export default function Editor() {
 <blockquote>
 <p>Nobody tells this to people who are beginners, I wish someone told me. All of us who do creative work, we get into it because we have good taste. But there is this gap. For the first couple years you make stuff, it’s just not that good. It’s trying to be good, it has potential, but it’s not. But your taste, the thing that got you into the game, is still killer. And your taste is why your work disappoints you. A lot of people never get past this phase, they quit. Most people I know who do interesting, creative work went through years of this. We know our work doesn’t have this special thing that we want it to have. We all go through this. And if you are just starting out or you are still in this phase, you gotta know it’s normal and the most important thing you can do is do a lot of work. Put yourself on a deadline so that every week you will finish one story. It is only by going through a volume of work that you will close that gap, and your work will be as good as your ambitions. And I took longer to figure out how to do this than anyone I’ve ever met. It’s gonna take a while. It’s normal to take a while. You’ve just gotta fight your way through. — Ira Glass</p>
 </blockquote>
-<p>See you tomorrow!</p><p>Have a question? Fire below.</p>`}
-        extensions={extensions}></EditorProvider>
-      <button>Send &rarr;</button>
+<p>See you tomorrow!</p><p>Have a question? Fire below.</p>`
+  })
+
+  return (
+    <div className="prose" id="editor">
+      <EditorContent editor={editor} />
+      <button
+        onClick={() => {
+          if (editor && !editor.isEmpty) {
+            fetch('/api/send', {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                html: editor.getHTML(),
+                json: editor.getJSON(),
+                date: dayjs(new Date() + 1).format('MM/DD/YYYY')
+              })
+            })
+              .then(res => res.json())
+              .then(json => {
+                console.log(json)
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          }
+        }}>
+        Send &rarr;
+      </button>
     </div>
   )
 }

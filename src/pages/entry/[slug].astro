@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro'
 import { getCollection, getEntry } from 'astro:content'
 import dayjs from 'dayjs'
+import { app } from '../firebase/client'
+import { getFirestore } from 'firebase-admin/firestore'
 
 export async function getStaticPaths() {
   const entries = await getCollection('entries', ({ data }) => data)
@@ -20,6 +22,9 @@ const { slug } = Astro.params
 const data = await getEntry('entries', slug)
 const { headings, Content } = await data.render()
 const { date, day, title } = data.data
+
+// Get newsletter entry, if it exists
+const db = getFirestore(app)
 
 // Get webring
 let webring = undefined

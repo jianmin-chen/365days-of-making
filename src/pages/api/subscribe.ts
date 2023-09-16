@@ -1,14 +1,7 @@
 import type { APIRoute } from 'astro'
 import { app } from '../../firebase/server'
 import { getFirestore } from 'firebase-admin/firestore'
-
-const streamToString = async stream => {
-  const chunks = []
-  for await (const chunk of stream) {
-    chunks.push(Buffer.from(chunk))
-  }
-  return Buffer.concat(chunks).toString('utf-8')
-}
+import { streamToString } from '../../lib/utils'
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   const { email } = JSON.parse(await streamToString(request.body))
