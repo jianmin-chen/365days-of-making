@@ -22,8 +22,6 @@ const data = await getEntry('entries', slug)
 const { headings, Content } = await data.render()
 let { date, day, title } = data.data
 
-date = date.addDays(1)
-
 // Get webring
 let webring = undefined
 try {

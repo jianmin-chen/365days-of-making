@@ -24,7 +24,7 @@ Date.prototype.addDays = function (days) {
 
 const getDates = (startDate: Date, stop: number) => {
   let dates = []
-  let curr = startDate.addDays(1)
+  let curr = startDate
   for (let i = 0; i < stop; i++) {
     dates.push(dayjs(curr).format('MMM DD, YYYY'))
     curr = curr.addDays(1)
