@@ -118,6 +118,8 @@ stork build --input ./public/search.toml --output ./public/search.st
 mv ./src/pages/api/search.ts .
 ```
 
+Run this every time before deploying. (Or create a NPM command to build locally. Whatever works.)
+
 ## Deploying
 
 Let's deploy. Set up an GitHub repository, and push the contents of your folder to the repository. Once you're done, head over to [Vercel](https://vercel.com), sign up if you haven't, and create a new project. Link that project to your repository, and paste your environment variables where it asks you to.

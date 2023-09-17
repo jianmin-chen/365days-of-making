@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev --port 3000",
     "start": "astro dev --port 3000",
-    "build": "rm -rf ./src/pages/api/setup.ts && astro build && npm run search",
+    "build": "rm -rf ./src/pages/api/setup.ts && astro build",
     "astro": "astro",
     "format": "prettier --ignore-path ./.prettierignore --write . --plugin=prettier-plugin-astro",
     "search": "chmod +x ./search.sh && ./search.sh"
