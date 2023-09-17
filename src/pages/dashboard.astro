@@ -5,8 +5,6 @@ import { app } from '../firebase/server'
 import { getAuth } from 'firebase-admin/auth'
 import { getFirestore } from 'firebase-admin/firestore'
 
-export const prerender = true
-
 Date.prototype.addDays = function (days) {
   let date = new Date(this.valueOf())
   date.setDate(date.getDate() + days)
@@ -19,17 +17,16 @@ console.log(auth)
 // Check current session
 if (!Astro.cookies.has('session')) return Astro.redirect('/signin')
 const sessionCookie = Astro.cookies.get('session').value
-console.log(sessionCookie)
 const decodedCookie = await auth.verifySessionCookie(sessionCookie)
-console.log(decodedCookie)
 const user = await auth.getUser(decodedCookie.uid)
-console.log(user)
 if (!user) return Astro.redirect('/signin')
 
 // Get current subscribers
 const db = getFirestore(app)
 const subscribersRef = await db.collection('subscribers').get()
 const subscribers = subscribersRef.docs.map(doc => doc.data())
+
+export const prerender = false
 ---
 
 <style is:global lang="scss">
