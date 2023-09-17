@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro'
 import { getCollection, getEntry } from 'astro:content'
 import dayjs from 'dayjs'
-import Newsletter from '../../components/Newsletter.astro'
+import Newsletter from '../../components/Newsletter.tsx'
 
 export async function getStaticPaths() {
   const entries = await getCollection('entries', ({ data }) => data)
@@ -363,7 +363,7 @@ export const prerender = true
         <h1 style={{ lineHeight: 1.2 }} id="title">Day {day}: {title}</h1>
         <Content />
         <hr />
-        <Newsletter date={date} />
+        <Newsletter client:only date={date} />
         <hr />
         <p>Have a question? Fire below.</p>
         <script
