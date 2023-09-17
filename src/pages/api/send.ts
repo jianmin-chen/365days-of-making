@@ -35,7 +35,7 @@ export const POST: APIRoute = async ({ request, redirect, cookies }) => {
     const newslettersRef = db.collection('newsletters')
     await newslettersRef.add({
       json,
-      date: Timestamp.fromDate(format(new Date(date) || new Date()))
+      date: Timestamp.fromDate(new Date(date) || new Date())
     })
   } catch (error) {
     console.log(error)
