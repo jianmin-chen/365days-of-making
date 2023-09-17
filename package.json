@@ -3,12 +3,10 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "rm -rf ./src/pages/api/setup.ts && astro build",
-    "preview": "astro preview",
+    "dev": "astro dev --port 3000",
+    "start": "astro dev --port 3000",
+    "build": "rm -rf ./src/pages/api/setup.ts && astro build && npm run search",
     "astro": "astro",
-    "setup": "npm i && mv ./setup.ts ./src/pages/api && echo 'Make a POST request to /api/setup with email and password to setup an admin account'",
     "format": "prettier --ignore-path ./.prettierignore --write . --plugin=prettier-plugin-astro",
     "search": "chmod +x ./search.sh && ./search.sh"
   },

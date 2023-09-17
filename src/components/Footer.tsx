@@ -35,7 +35,7 @@ export default function Footer({ webring }) {
       <a href={prev.url} target="_blank">
         <svg
           fillRule="evenodd"
-          clip-rule="evenodd"
+          clipRule="evenodd"
           strokeLinejoin="round"
           strokeMiterlimit="1.414"
           xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +54,7 @@ export default function Footer({ webring }) {
       <a href={next.url} target="_blank">
         <svg
           fillRule="evenodd"
-          clip-rule="evenodd"
+          clipRule="evenodd"
           strokeLinejoin="round"
           strokeMiterlimit="1.414"
           xmlns="http://www.w3.org/2000/svg"

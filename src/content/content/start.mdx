@@ -81,6 +81,8 @@ Now that you've got everything set up, let's write our first entry. This can be 
 
 Also feel free to edit this page you're reading right now - that's in `/src/content/content/start.mdx`, although it should stay relatively the same.
 
+One last thing before we deploy - did you know you can search for things with `Cmd+k` or `Ctrl+k`? I mean, it works on this site, but not on yours, because you haven't set it up. We use [Stork](https://stork-search.net/) for static search, which makes it insanely fast because all search indexes have already been built. To use it, first [install Rust](https://www.rust-lang.org/tools/install), and then run `npm run search`. **Keep in mind that this only works on Linux and macOS computers.**
+
 ## Deploying
 
 Let's deploy. Set up an GitHub repository, and push the contents of your folder to the repository. Once you're done, head over to [Vercel](https://vercel.com), sign up if you haven't, and create a new project. Link that project to your repository, and paste your environment variables where it asks you to.

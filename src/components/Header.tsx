@@ -57,7 +57,7 @@ export default function Header({ popup }) {
             </h2>
             <h2>/</h2>
             <h2>
-              <a href="/start">About & Start your own!</a>
+              <a href="/start">Start your own!</a>
             </h2>
           </nav>
         </div>

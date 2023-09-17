@@ -34,6 +34,3 @@ export const createSt = async () => {
       )
   })
 }
-
-if (require.main === module) {
-}

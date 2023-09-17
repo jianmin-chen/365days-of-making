@@ -5,11 +5,11 @@ url_prefix = "https://365days-of-making.vercel.app/entry/"
   [[input.files]]
   path = "1.mdx"
   url = "1"
-  title = "Starting out"
+  title = "Starting out - Day 1"
   filetype = "Markdown"
 
   [[input.files]]
   path = "2.mdx"
   url = "2"
-  title = "Robotics meeting, birthday gift"
+  title = "Robotics meeting, birthday gift - Day 2"
   filetype = "Markdown"
