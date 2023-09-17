@@ -116,18 +116,7 @@ const subscribers = subscribersRef.docs.map(doc => doc.data())
   }
 </style>
 
-<script>
-  document.getElementById('signout').addEventListener('submit', async event => {
-    event.preventDefault()
-    const response = await fetch('/api/auth/signout')
-    if (response.redirected) window.location.assign(response.url)
-  })
-</script>
-
 <Layout title="Dashboard" description="Dashboard for sending applications">
-  <form id="signout" method="POST">
-    <button>Sign out</button>
-  </form>
   <div id="container">
     <div>
       <Editor client:load />

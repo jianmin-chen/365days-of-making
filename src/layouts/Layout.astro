@@ -20,6 +20,8 @@ let { title, description, popup, webring } = Astro.props
 title = `365 Days of Making | ${title}` || '365 Days of Making'
 description = description || ''
 popup = popup || false
+
+export const prerender = true
 ---
 
 <!doctype html>
