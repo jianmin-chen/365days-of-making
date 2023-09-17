@@ -46,7 +46,9 @@ FIREBASE_AUTH_CERT_URL=YOUR_AUTH_CERT_URL
 FIREBASE_CLIENT_CERT_URL=YOUR_CLIENT_CERT_URL
 ```
 
-Move `setup.ts` into `/pages/api/auth`. We're going to set up an admin account with your personal email (or as many as you'd like, so make sure to use the appropriate email. Or you could create multiple logins. Whatever you'd like.)
+These will come from the JSON file Firebase downloads for you.
+
+Head back over to Firebase and open the Build dropdown > Authentication, and then click on the "Email/password" option. Enable it. We're going to set up an admin account with your personal email (or as many as you'd like, so make sure to use the appropriate email. Or you could create multiple logins. Whatever you'd like.) Next, move `setup.ts` into `/pages/api/auth`.
 
 Now we're going to start Astro:
 
@@ -60,14 +62,28 @@ To get ourselves an admin account, let's now download [Postman](https://www.post
 
 ![](https://cloud-qw7gr70h4-hack-club-bot.vercel.app/0screenshot_2023-09-15_at_3.31.26___pm.png)
 
-Create a new request with the Add button and then set it to be `POST` instead of the default `GET`. Go over to the Body tab and select `form-data`, and add these two key-value pairs:
+Create a new request with the Add button, set it to go to `localhost:3000/api/auth/setup` then set it to be `POST` instead of the default `GET`. Go over to the Body tab and select `form-data`, and add these two key-value pairs:
 
 ```
 email=YOUR EMAIL
 password=YOUR PASSWORD
 ```
 
-If everything works out, you now have an account! Delete the `setup.ts` file and head to `/signin`, and you should be able to sign in, after which you will get redirected to the dashboard.
+If everything works out, you now have an account! Delete the `setup.ts` file and head to `/signin`, and you should be able to sign in, after which you will get redirected to the dashboard. However, when you get to the dashboard you'll see another error - something along the lines of "Firestore is not enabled". We actually haven't turned on our database in Firebase, so let's go back and do that now. In the same Build dropdown, click on the "Firestore Database" option > Create database. Choose "Start in production mode" - we're going to edit the rules - and then Next > Enable. Once it's done loading, head over to the Rules tab and paste this in:
+
+```
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+```
+
+Now the dashboard should show up!
 
 Let's do one last thing for setup - set a start date. Head back to `.env`, and add in a line like the following:
 
@@ -77,11 +93,30 @@ PUBLIC_START_DATE=2023-09-15
 
 (Prefixing our environment variables with a `PUBLIC_` lets Astro know that a variable should be public.) This will be used on the main page to map all 365 days.
 
-Now that you've got everything set up, let's write our first entry. This can be about anything! For me, I introduced myself, what this was about, why I was doing it, and what I was going to be doing. [You can check it out here.](/entry/1)
+Now that you've got everything set up, let's write our first entry. Remove the current entries by deleting everything from `/src/content/entries`. This can be about anything! For me, I introduced myself, what this was about, why I was doing it, and what I was going to be doing. [You can check it out here.](/entry/1)
 
 Also feel free to edit this page you're reading right now - that's in `/src/content/content/start.mdx`, although it should stay relatively the same.
 
-One last thing before we deploy - did you know you can search for things with `Cmd+k` or `Ctrl+k`? I mean, it works on this site, but not on yours, because you haven't set it up. We use [Stork](https://stork-search.net/) for static search, which makes it insanely fast because all search indexes have already been built. To use it, first [install Rust](https://www.rust-lang.org/tools/install), and then run `npm run search`. **Keep in mind that this only works on Linux and macOS computers.**
+One last thing before we deploy - did you know you can search for things with `Cmd+k` or `Ctrl+k`? So cool, except the search isn't working - we need to set it up. First things first, we add a environment variable to `.env`:
+
+```
+PUBLIC_SHOW_SEARCH=true
+```
+
+We use [Stork](https://stork-search.net/) for static search, which makes it insanely fast because all search indexes have already been built. (Take a look at the website for a better explanation.) To use it, first [install Rust](https://www.rust-lang.org/tools/install), and then run `npm run search`. **Keep in mind that this only works on Linux and macOS computers.** On Windows computers, you'll have to run the following manually:
+
+```
+cargo install stork-search --locked
+mv ./search.ts ./src/pages/api
+npm run dev
+```
+
+And then head over to `http://localhost:3000/api/search`, close the server, and then run:
+
+```
+stork build --input ./public/search.toml --output ./public/search.st
+mv ./src/pages/api/search.ts .
+```
 
 ## Deploying
 
@@ -130,6 +165,14 @@ Yeah! Add an variable to `.env`:
 
 ```
 PUBLIC_NUMBER_OF_DAYS=365
+```
+
+**Can I make the excerpts a bit longer?**
+
+Yeah! Add an variable to `.env`:
+
+```
+PUBLIC_EXCERPT_LENGTH=120
 ```
 
 **What's up with all this extra content in the dashboard?**

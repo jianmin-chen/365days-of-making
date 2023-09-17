@@ -1,0 +1,36 @@
+---
+import { app } from '../firebase/server'
+import { getFirestore } from 'firebase-admin/firestore'
+import { ReadOnly } from './Editor'
+
+const { date } = Astro.props
+
+// Get newsletter entry, if it exists
+const db = getFirestore(app)
+const newslettersRef = await db.collection('newsletters').get()
+const newsletter = newslettersRef.docs
+  .find(doc => {
+    const newsletterDate = doc.data().date.toDate()
+    if (
+      newsletterDate.getFullYear() === date.getFullYear() &&
+      newsletterDate.getMonth() === date.getMonth() &&
+      newsletterDate.getDate() === date.getDate()
+    )
+      return true
+    return false
+  })
+  ?.data()
+
+export const prerender = false
+---
+
+{
+  newsletter !== undefined ? (
+    <details>
+      <summary>Today's newsletter</summary>
+      <ReadOnly client:load content={newsletter.json} />
+    </details>
+  ) : (
+    <p>No newsletter yet.</p>
+  )
+}

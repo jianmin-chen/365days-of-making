@@ -6,12 +6,20 @@ import TOML from '@iarna/toml'
 import { getCollection } from 'astro:content'
 
 export const createSt = async () => {
-  let files = []
+  let files = [
+    {
+      path: 'content/start.mdx',
+      url: '/start',
+      title: 'Start your own!',
+      filetype: 'Markdown'
+    }
+  ]
+
   const entries = await getCollection('entries')
   entries.map(entry => {
     files.push({
-      path: entry.id,
-      url: entry.data.day.toString(),
+      path: `entries/${entry.id}`,
+      url: `/entry/${entry.data.day.toString()}`,
       title: `${entry.data.title} - Day ${entry.data.day}`,
       filetype: 'Markdown'
     })
@@ -19,8 +27,8 @@ export const createSt = async () => {
 
   const str = TOML.stringify({
     input: {
-      base_directory: 'src/content/entries',
-      url_prefix: 'https://365days-of-making.vercel.app/entry/',
+      base_directory: 'src/content/',
+      url_prefix: 'https://365days-of-making.vercel.app/',
       files
     }
   })

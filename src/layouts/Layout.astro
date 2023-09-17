@@ -34,7 +34,11 @@ popup = popup || false
   </head>
   <body>
     <Header client:load popup={popup} />
-    <Search client:only />
+    {
+      Boolean(import.meta.env.PUBLIC_SHOW_SEARCH) === true && (
+        <Search client:only />
+      )
+    }
     <main>
       <slot />
     </main>

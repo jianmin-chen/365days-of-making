@@ -2,9 +2,7 @@
 import Layout from '../../layouts/Layout.astro'
 import { getCollection, getEntry } from 'astro:content'
 import dayjs from 'dayjs'
-import { app } from '../../firebase/server'
-import { getFirestore } from 'firebase-admin/firestore'
-import { ReadOnly } from '../../components/Editor'
+import Newsletter from '../../components/Newsletter.astro'
 
 export async function getStaticPaths() {
   const entries = await getCollection('entries', ({ data }) => data)
@@ -25,22 +23,6 @@ const { headings, Content } = await data.render()
 let { date, day, title } = data.data
 
 date = date.addDays(1)
-
-// Get newsletter entry, if it exists
-const db = getFirestore(app)
-const newslettersRef = await db.collection('newsletters').get()
-const newsletter = newslettersRef.docs
-  .find(doc => {
-    const newsletterDate = doc.data().date.toDate()
-    if (
-      newsletterDate.getFullYear() === date.getFullYear() &&
-      newsletterDate.getMonth() === date.getMonth() &&
-      newsletterDate.getDate() === date.getDate()
-    )
-      return true
-    return false
-  })
-  ?.data()
 
 // Get webring
 let webring = undefined
@@ -381,16 +363,7 @@ export const prerender = true
         <h1 style={{ lineHeight: 1.2 }} id="title">Day {day}: {title}</h1>
         <Content />
         <hr />
-        {
-          newsletter !== undefined ? (
-            <details>
-              <summary>Today's newsletter</summary>
-              <ReadOnly client:load content={newsletter.json} />
-            </details>
-          ) : (
-            <p>No newsletter yet.</p>
-          )
-        }
+        <Newsletter date={date} />
         <hr />
         <p>Have a question? Fire below.</p>
         <script

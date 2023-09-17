@@ -43,6 +43,7 @@ export default function Search() {
           className="stork-input"
           style={{ borderRadius: 0 }}
           data-stork="search"
+          placeholder="Search..."
         />
         <div data-stork="search-output"></div>
       </div>
