@@ -12,10 +12,5 @@ export default defineConfig({
     }
   },
   output: 'server',
-  server: {
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
-  },
   adapter: vercel()
 })

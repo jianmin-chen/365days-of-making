@@ -17,7 +17,7 @@ export default function Header({ popup }) {
       <Toaster
         toastOptions={{
           style: {
-            fontFamily: 'sans-serif'
+            fontFamily: 'var(--font-sans), sans-serif'
           }
         }}
       />

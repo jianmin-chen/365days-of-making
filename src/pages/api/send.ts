@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro'
 import { app } from '../../firebase/server'
-import { getFirestore } from 'firebase-admin/firestore'
+import { getFirestore, Timestamp } from 'firebase-admin/firestore'
 import { streamToString } from '../../lib/utils'
 import { send } from '../../lib/email'
 import { getAuth } from 'firebase-admin/auth'
@@ -33,8 +33,12 @@ export const POST: APIRoute = async ({ request, redirect, cookies }) => {
 
     // Upload to database
     const newslettersRef = db.collection('newsletters')
-    await newslettersRef.add({ json, date: date || new Date() })
+    await newslettersRef.add({
+      json,
+      date: Timestamp.fromDate(format(new Date(date) || new Date()))
+    })
   } catch (error) {
+    console.log(error)
     return new Response(`Something went wrong: ${error.message}`, {
       status: 500
     })

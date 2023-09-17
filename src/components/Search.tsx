@@ -18,6 +18,15 @@ export default function Search() {
     { preventDefault: true }
   )
 
+  useHotkeys(
+    'ctrl+k',
+    () => {
+      const modal = modalRef.current
+      modal.classList.add('modal-open')
+    },
+    { preventDefault: true }
+  )
+
   return (
     <div
       className="modal"
@@ -30,6 +39,7 @@ export default function Search() {
         className="modal-content stork-wrapper"
         onClick={event => event.stopPropagation()}>
         <input
+          autoFocus={true}
           className="stork-input"
           style={{ borderRadius: 0 }}
           data-stork="search"

@@ -141,6 +141,28 @@ export const prerender = true
   }
 </style>
 
+<script>
+  const toggle = (choice: boolean = undefined) => {
+    // Open sidebar if on right screen size
+    const sidebar = document.getElementById('sidebar')
+    sidebar.classList.toggle('sidebar-open')
+  }
+
+  window.onload = () => {
+    document.getElementById('sidebar').addEventListener('click', event => {
+      event.stopPropagation()
+    })
+
+    document.querySelectorAll('.sidebar-button').forEach(button => {
+      button.addEventListener('click', toggle)
+    })
+
+    document.querySelectorAll('.mobile a').forEach(heading => {
+      heading.addEventListener('click', toggle)
+    })
+  }
+</script>
+
 <Layout
   title="Start your own"
   description="Start your own 365 days of making!"

@@ -4,6 +4,7 @@ import { getCollection, getEntry } from 'astro:content'
 import dayjs from 'dayjs'
 import { app } from '../../firebase/server'
 import { getFirestore } from 'firebase-admin/firestore'
+import { ReadOnly } from '../../components/Editor'
 
 export async function getStaticPaths() {
   const entries = await getCollection('entries', ({ data }) => data)
@@ -21,13 +22,25 @@ Date.prototype.addDays = function (days) {
 const { slug } = Astro.params
 const data = await getEntry('entries', slug)
 const { headings, Content } = await data.render()
-const { date, day, title } = data.data
+let { date, day, title } = data.data
+
+date = date.addDays(1)
 
 // Get newsletter entry, if it exists
 const db = getFirestore(app)
-const subscribersRef = await db.collection('subscribers').get()
-const subscribers = subscribersRef.docs.map(doc => doc.data())
-console.log(subscribers)
+const newslettersRef = await db.collection('newsletters').get()
+const newsletter = newslettersRef.docs
+  .find(doc => {
+    const newsletterDate = doc.data().date.toDate()
+    if (
+      newsletterDate.getFullYear() === date.getFullYear() &&
+      newsletterDate.getMonth() === date.getMonth() &&
+      newsletterDate.getDate() === date.getDate()
+    )
+      return true
+    return false
+  })
+  ?.data()
 
 // Get webring
 let webring = undefined
@@ -359,10 +372,22 @@ export const prerender = true
     <div class="entry">
       <div class="prose">
         <p style={{ color: 'var(--theme)', marginBottom: '8px' }}>
-          {dayjs(date.addDays(1)).format('MMM DD, YYYY')}
+          {dayjs(date).format('MMM DD, YYYY')}
         </p>
         <h1 style={{ lineHeight: 1.2 }} id="title">Day {day}: {title}</h1>
         <Content />
+        {
+          newsletter !== undefined ? (
+            <details>
+              <summary>Today's newsletter</summary>
+              <hr />
+              <ReadOnly client:load content={newsletter.json} />
+              <hr />
+            </details>
+          ) : (
+            <p>No newsletter yet.</p>
+          )
+        }
         <p>Have a question? Fire below.</p>
         <script
           src="https://giscus.app/client.js"

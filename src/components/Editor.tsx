@@ -2,7 +2,6 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import Header from '@tiptap/extension-heading'
 import Highlight from '@tiptap/extension-highlight'
 import Image from '@tiptap/extension-image'
-import Link from '@tiptap/extension-link'
 import Placeholder from '@tiptap/extension-placeholder'
 import Strike from '@tiptap/extension-strike'
 import Subscript from '@tiptap/extension-subscript'
@@ -11,7 +10,27 @@ import Underline from '@tiptap/extension-underline'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import toast from 'react-hot-toast'
-import dayjs from 'dayjs'
+import Link from './linkTiptap'
+
+export function ReadOnly({ content }) {
+  const editor = useEditor({
+    content,
+    editable: false,
+    extensions: [
+      StarterKit,
+      Header.configure({ levels: [1, 2, 3, 4, 5, 6] }),
+      Highlight,
+      Image,
+      Link,
+      Strike,
+      Subscript,
+      Superscript,
+      Underline
+    ]
+  })
+
+  return <EditorContent editor={editor} />
+}
 
 export default function Editor() {
   const extensions = [
@@ -19,7 +38,7 @@ export default function Editor() {
     Header.configure({ levels: [1, 2, 3, 4, 5, 6] }),
     Highlight,
     Image,
-    Link.configure({ autolink: true, openOnClick: true }),
+    Link,
     Placeholder.configure({ placeholder: 'Start writing!' }),
     Strike,
     Subscript,
@@ -102,16 +121,13 @@ export default function Editor() {
               body: JSON.stringify({
                 html: editor.getHTML(),
                 json: editor.getJSON(),
-                date: dayjs(new Date() + 1).format('MM/DD/YYYY')
+                date: new Date()
               })
+            }).then(res => {
+              if (res.ok) toast.success('Newsletter successfully delivered!')
+              else
+                toast.error('Oops, looks like there was an error delivering :(')
             })
-              .then(res => res.json())
-              .then(json => {
-                console.log(json)
-              })
-              .catch(err => {
-                console.log(err)
-              })
           }
         }}>
         Send &rarr;

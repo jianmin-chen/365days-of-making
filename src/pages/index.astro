@@ -3,9 +3,6 @@ import Layout from '../layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 import dayjs from 'dayjs'
 import { marked } from 'marked'
-import { createSt } from '../lib/search'
-
-// Create Stork file
 
 const data = await getCollection('entries')
 let entries = {}

@@ -1,5 +1,0 @@
-{
-	"runtime": "nodejs18.x",
-	"handler": "dist/pages/api/auth/entry.signout.astro.mjs",
-	"launcherType": "Nodejs"
-}

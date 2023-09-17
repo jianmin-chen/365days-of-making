@@ -317,6 +317,15 @@ footer {
     font-family: var(--font-mono);
   }
 
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+  }
+
   img {
     max-width: 100%;
   }
@@ -366,11 +375,5 @@ footer {
     pre {
       font-size: 1.1rem;
     }
-  }
-}
-
-.giscus {
-  @media screen and (max-width: $md) {
-    padding-inline: 2rem;
   }
 }

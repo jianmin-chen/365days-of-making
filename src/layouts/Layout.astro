@@ -10,10 +10,10 @@ interface Webring {
 }
 
 export interface Props {
-  title: string | undefined
-  description: string | undefined
-  popup: boolean | undefined
-  webring: Array<Webring> | undefined
+  title?: string
+  description?: string | undefined
+  popup?: boolean | undefined
+  webring?: Array<Webring> | undefined
 }
 
 let { title, description, popup, webring } = Astro.props
