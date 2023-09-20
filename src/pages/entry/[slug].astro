@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro'
 import { getCollection, getEntry } from 'astro:content'
 import dayjs from 'dayjs'
 import Newsletter from '../../components/Newsletter.tsx'
+import Alert from '../../components/Alert'
 
 export async function getStaticPaths() {
   const entries = await getCollection('entries', ({ data }) => data)
@@ -21,6 +22,11 @@ const { slug } = Astro.params
 const data = await getEntry('entries', slug)
 const { headings, Content } = await data.render()
 let { date, day, title } = data.data
+
+// Convert date according to Stack Overflow issue: https://stackoverflow.com/questions/7556591/is-the-javascript-date-object-always-one-day-off
+date = date.split('-')
+date = new Date(Number(date[0]), Number(date[1]) - 1, Number(date[2]))
+console.log(date)
 
 // Get webring
 let webring = undefined
@@ -359,7 +365,7 @@ export const prerender = true
           {dayjs(date).format('MMM DD, YYYY')}
         </p>
         <h1 style={{ lineHeight: 1.2 }} id="title">Day {day}: {title}</h1>
-        <Content />
+        <Content components={{ Alert }} />
         <hr />
         <Newsletter client:only date={date} />
         <hr />

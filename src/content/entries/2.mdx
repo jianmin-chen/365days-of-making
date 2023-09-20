@@ -1,5 +1,5 @@
 ---
-date: 2023-09-16
+date: '2023-09-17'
 day: 2
 title: Robotics meeting, birthday gift
 ---
@@ -18,11 +18,83 @@ To change the program, you can head to a website where you'll get a UI that lets
 
 You will be able to save and share programs with the web UI.
 
-In steps (that's how I like to think):
+## Programming language layout
 
-1. User sets up WiFi username and password on
+Here's an incomplete example of how Game of Life might look in the programming language, `lightlang` (if you have a better name let me know):
+
+```
+# Why did I write a whole parser for this? I don't really know
+# Let's make this wrap around!
+var rows = 50
+var cols = 20
+
+define Cell { x, y, live }
+
+# Exercise: try setting an initial seed!
+function seed() {
+    var cells = []
+    for x through (0, rows) {
+        for y through (0, cols) {
+            cells.push(Cell(x: x, y: y, live: random(0, 1)))
+        }
+    }
+    return cells
+}
+
+var cells = seed()
+
+function getNeighbors(cell) {
+
+}
+
+function loop() {
+    # This loop runs every iteration and must be in every program
+    for i through (0, cells.length()) {
+        var cell = cells[i]
+        var neighbors = getNeighbors(cells)
+        if (cell.live) {
+            if (neighbors.length() < 2 or neighbors.length() > 3) {
+                # Any live cell with fewer than two live neighbors dies, as if by underpopulation
+                # Any live cell with more than three live neighbors dies, as if by overpopulation
+                cell.live = false
+            }
+        } elif (not cell.live and neighbors == 3) {
+            # Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction
+            cell.live = true
+        }
+
+        if (cell.live) {
+            # Now draw the cell if it's alive!
+            var color = Color(r: 0, g: 255, b: 0)
+            Canvas.fill(x, y, color)
+        } else {
+            # If it's dead, turn the cell off
+            Canvas.erase(x, y)
+        }
+    }
+}
+```
+
+Programs will look output an array of objects with the keys `{ color, x, y }`. I don't see anything tough with working on this, except that I need to keep in mind of certain features the language should provide in this context:
+
+- RGB gradients instead of setting individual colors. (Basically the language will do the calculations for you on the backend.)
+- Wrap around support.
+
+---
+
+## Planning
 
 Since I like to think in steps, I'm thinking of finishing this project by this Sunday (09/24) (not including shipping, obviously). Here's what looks possible.
 
-1. Tomorrow, Monday, I work through PCB jams: [one on making a business card](https://jams.hackclub.com/jam/hacker-card) and [one of making an USB hub](https://jams.hackclub.com/batch/usb-hub). Both are in EasyEDA, and while I would prefer KiCad because it seems like the more professional choice, oh well.
-2. Today through end of day Wednesday, I'll work on building the website and parser for the custom programming language. I may build the
+- Before the end of this weekend (Sunday, September 24 I want to have a mini Post-it size PCB out for shipping through JCLPCB.)
+- The programming language should be built first, in C.
+- Afterwards, I can build the web UI, possibly porting the C over using WebAssembly. (Definitely going to write something up on this.)
+- Next, I'm going to learn how to design PCBs by learning how to design [a business card](), [a USB hub](), and [a LED-encrusted level]().
+- While I'm learning how to design PCBs, I'll also work on playing with a Raspberry Pi Zero and figuring how to transfer data to it (specifically, JSON like what I talked about above).
+- After I've designed those and pushed those out for shipping, I'm going to design my own PCB. I'll design a smaller one for testing.
+- I'll get reimbursed afterwards throughout [OnBoard](https://onboard.hackclub.com), although if you're planning to apply to OnBoard, please don't do what I'm doing.
+- Once I've received the smaller one for testing, I'll hook it up to the Raspberry Pi Zero and make sure zit works, make any necessary edits to everything if needed, and get a larger version ordered!
+- Assemble the larger version, test it, and give it as a late birthday gift :)
+- Write a Jam on how to build the entire thing! So that you can build it too!
+
+I would love to ship this project by mid-October (October 15)! Will keep updated in future posts.

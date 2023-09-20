@@ -15,11 +15,11 @@ export default function Newsletter({ date }) {
   }, [])
 
   return newsletter !== undefined ? (
-    <details>
+    <details open>
       <summary>Today's newsletter</summary>
       <ReadOnly content={newsletter} />
     </details>
   ) : (
-    <p>No newsletter yet.</p>
+    <p>No newsletter for this day.</p>
   )
 }

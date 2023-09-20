@@ -291,6 +291,11 @@ footer {
   font-size: 1.5rem;
   line-height: 1.6;
 
+  .alert {
+    background-color: #fef9c3;
+    padding: 1rem 2rem;
+  }
+
   blockquote {
     border-left: 2px solid var(--theme);
     padding-left: 1rem;

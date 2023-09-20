@@ -4,7 +4,7 @@ const entries = defineCollection({
   schema: z.object({
     title: z.string(),
     day: z.number(),
-    date: z.date()
+    date: z.string()
   })
 })
 
