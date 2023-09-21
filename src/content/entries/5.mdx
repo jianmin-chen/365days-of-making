@@ -1,0 +1,75 @@
+---
+title: Rewriting Marrow, finishing Blot website, signin
+day: 5
+date: "2023-09-20"
+---
+
+Ah! Day five of making! Tonight I'm going to finish the Blot website and then sleep tomorrow morning. I guess I need a break from frontend work, really - if I can just get some of the stuff I need to get done, I can work on the things that I really want to work on. (Don't tell anyone. This is just between you and me honestly for the timebeing.)
+
+One of the issues I've been struggling with is feeling obligated to do something. I talked about this with friends and I guess the general feeling is that for most projects I like to work on, my general workflow is to switch between two things at any given time so things stay fresh. Lately that hasn't been working so well because, well, there's a thing called *deadlines*. I mean, if you're reading this, you probably have deadlines of your, especially if you're a student. And it's really been wearing down on me because I don't know what I'm doing anymore, nor do I really want to do it. I guess the best thing to do is to finish everything as fast as possible and then  
+
+## Rewriting Marrow in Rust
+
+I think I'm going to rewrite Marrow in Rust. I'm like borderline reluctant and borderline excited; reluctant because I'll be abandoning ~2500 lines of code (I think) that I've written in C, but excited because I really got to know C through following the [Build Your Own Editor]() tutorial and now I can follow through that tutorial, just in Rust. It's a great tutorial, so I really can't think of a better way to learn Rust.
+
+Other than that, I do want to rewrite Marrow in Rust just because:
+
+1. Easier cross-platform compatibility with stuff like looking at/searching through directories
+2. Good for someone like me who's new at experimenting with dynamic libraries and accessing libraries in another programming language. I found a great article on [calling Rust from other languages](https://siciarz.net/24-days-of-rust-calling-rust-from-other-languages/) but I couldn't find the same direct resource for C (except maybe the Lua book, but I don't really have any interest in writing anything in Lua currently as my language list is a tad bit long: Rust, Ruby, ...) Also, it's just easier to write plugins in Rust vs. C.
+3. Good for just refreshing my mindset. The problem with basing the editor of the *Build Your Own Editor* tutorial is that you have an uneven foundation to build upon. It doesn't follow best practices but it helps you navigate C and just working with the terminal in general. After a few months of working on it I can confidently say I know how I should go about structuring a Rust rewrite.
+
+### This last point
+
+I want to talk about this last part a bit. Currently, Marrow emphasizes modularizing everything. I will continue doing that. You should be able to run `marrow [file|folder]` and it should open said file/folder with an initial tree and tab. You should be able to `Ctrl-Shift-P > new` or `:new` to choose from a series of modular components to open:
+
+* Tree
+* Editor
+* Emulator
+* Output (basically editor that can't be edited, for plugin purposes)
+
+There will also be few global components:
+
+* Status bar
+* Notifications system
+* Modal system. Search, etc. will take place in this modal.
+
+This requires a robust window management system. `curses` could theoretically make this easier, but I'm going to go the hard route and just use terminal escape sequences.
+
+Plugins should be able to hook into different parts of the 
+process and I should be able to provide an API that lets them change the process output. For example, when drawing editor, there should be a Git gutter plugin. Other plugins I intend on writing:
+
+* Autocomplete system
+
+Highlighting should be a plugin instead, so that it's not done regular expression style but rather with an actual parser for different programming languages that can then get used by an overarching plugin.
+
+However there will be a couple of extra builtin things:
+
+* Highlighting closing symbols should be supported in all languages
+* There should be a global config like `.vimrc` that is well designed.
+
+I will be creating a new branch in the current repository with this stuff in the README.
+
+I said this was going to be a two month deadline (end of October)  but maybe not haha. Going to look at end of year perhaps. I mean, at this point I also want to write a custom terminal emulator (called `stem` for stem cells). 
+
+Okay let's be honest, the real reason why I'm rewriting this is because I just read *Just for Fun* by Linus Torvalds and him talking about building Linux for fun reminded me of Marrow.
+
+I'm also looking at potentially rewriting Markright's backend. I say this because it's horribly done, where a lot of unnecessary recursion is needed to map through folders and successfully interact with it.
+
+### What I learned from writing it in C
+
+Honestly a lot of things.
+
+* Terminal emulating: masters, slaves, and forking
+* Terminal escape sequences
+* Various libraries (wow I can actually remember)
+
+## Recapping
+
+Okay, pizza fund bot and Blot taken care of. For the next two months, until the end of November, I will be working on:
+
+* Updates to things I'm currently working (namely Blot website 🙄)
+* Clubs dashboard for Hack Club (backend specifically, thank god)
+* Marrow and Stem 
+* Small projects here and there (don't want to overload myself and have it become tedious rather than fun, but mostly lights project; typewriter project; and learning Ruby to build a couple tiny apps: something to track my books, something to stay up to date with friends, and something combining fitness and AI for Buildspace)
+
+I was originally going to write Marrow and Stem for myself, but considering how modular I'm making it, I definitely think the two can and should be used by other people. We'll see! 
